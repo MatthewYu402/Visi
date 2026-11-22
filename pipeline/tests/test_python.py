@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parents[2]
 FIXTURES = ROOT / "fixtures"
 CASES = {
     "two-sum": ("two_sum", "nums = [2,7,11,15], target = 9"),
-    "reverse-list": ("reverse_list", "head = [1,2,3,4,5]"),
+    "reverse-list": ("reverse_list", "head = [4,8,15,16,23]"),
     "preorder-traversal": ("preorder_traversal", "root = [1,null,2,3]"),
     "clone-graph": ("clone_graph", "adjList = [[2,4],[1,3],[2,4],[1,3]]"),
     "max-depth": ("max_depth", "root = [3,9,20,null,null,15,7]"),

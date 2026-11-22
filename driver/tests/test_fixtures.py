@@ -50,7 +50,7 @@ public:
 CASES = {
     # golden name: (source file stem, example as LeetCode writes it, prefix)
     "two-sum": ("two_sum", "Input: nums = [2,7,11,15], target = 9", ""),
-    "reverse-list": ("reverse_list", "Input: head = [1,2,3,4,5]", ""),
+    "reverse-list": ("reverse_list", "Input: head = [4,8,15,16,23]", ""),
     "preorder-traversal": ("preorder_traversal", "Input: root = [1,null,2,3]", ""),
     "clone-graph": ("clone_graph", "Input: adjList = [[2,4],[1,3],[2,4],[1,3]]", CLONE_GRAPH_NODE),
     "max-depth": ("max_depth", "Input: root = [3,9,20,null,null,15,7]", ""),

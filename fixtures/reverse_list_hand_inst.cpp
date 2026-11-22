@@ -82,10 +82,10 @@ public:
 
 // ---- Appended by the driver (hand-written for now) ----
 int main() {
-  trace::tracer.begin(R"({"method": "reverseList", "params": [{"name": "head", "type": "ListNode"}], "returns": {"type": "ListNode"}, "input": {"head": [1, 2, 3, 4, 5]}})");
+  trace::tracer.begin(R"({"method": "reverseList", "params": [{"name": "head", "type": "ListNode"}], "returns": {"type": "ListNode"}, "input": {"head": [4, 8, 15, 16, 23]}})");
 
-  // head = [1, 2, 3, 4, 5]
-  ListNode *head = new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5)))));
+  // head = [4, 8, 15, 16, 23]
+  ListNode *head = new ListNode(4, new ListNode(8, new ListNode(15, new ListNode(16, new ListNode(23)))));
   ListNode *answer = Solution().reverseList(head);
 
   trace::write_result(answer);

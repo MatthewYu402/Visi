@@ -15,7 +15,7 @@ from support import ROOT, python, solution, trace
 FIXTURES = ["two-sum", "reverse-list", "preorder-traversal", "clone-graph", "max-depth", "subsets"]
 EXAMPLES = {
     "two-sum": "nums = [2,7,11,15], target = 9",
-    "reverse-list": "head = [1,2,3,4,5]",
+    "reverse-list": "head = [4,8,15,16,23]",
     "preorder-traversal": "root = [1,null,2,3]",
     "clone-graph": "adjList = [[2,4],[1,3],[2,4],[1,3]]",
     "max-depth": "root = [3,9,20,null,null,15,7]",
