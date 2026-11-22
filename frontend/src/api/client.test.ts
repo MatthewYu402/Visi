@@ -12,7 +12,7 @@ function fakeFetch(status: number, body: unknown) {
   return { f, sent };
 }
 
-const REQUEST = { source: "class Solution {};", method: "twoSum", fields: { nums: "[2,7,11,15]", target: "9" } };
+const REQUEST = { source: "class Solution {};", method: "twoSum", fields: { nums: "[5,1,8,3]", target: "11" } };
 
 describe("run", () => {
   it("sends the request and loads the trace it gets back", async () => {

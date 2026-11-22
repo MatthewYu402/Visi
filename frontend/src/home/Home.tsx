@@ -77,7 +77,7 @@ export function Home() {
               <span className="hero-accent">one line at a time.</span>
             </h1>
             <p className="hero-lede">
-              Paste a LeetCode <code>Solution</code> exactly as LeetCode gives it, add an example, and step through it. Every array, map, stack, linked list,
+              Paste a <code>Solution</code> class, add an example, and step through it. Every array, map, stack, linked list,
               tree, and graph it touches is drawn as it changes, beside the line that changed it.
             </p>
             <div className="hero-actions">
@@ -124,18 +124,18 @@ export function Home() {
             <p className="section-lede">Your code runs as written, in its own language. What comes back is a recording of its data, one snapshot per line.</p>
           </div>
           <ol className="how">
-            <HowStep n={1} title="Your Solution and an example">
-              The class LeetCode gives you, with its commented <code>ListNode</code> or <code>TreeNode</code>, and an <code>Input:</code> line pasted from the
-              problem. Nothing to annotate.
+            <HowStep n={1} title="Your Solution and an example" visual={<HowCode />}>
+              Your <code>Solution</code> class in the LeetCode format, with the commented <code>ListNode</code>, <code>TreeNode</code>, or <code>Node</code> above
+              it, and an example input. Visi builds on those comments to know how your lists, trees, and graphs are made. Nothing to annotate.
             </HowStep>
-            <HowStep n={2} title="Run in a sandbox">
+            <HowStep n={2} title="Run in a sandbox" visual={<HowSandbox />}>
               The code is instrumented before each line and run in an isolated container, with no network and strict limits.
             </HowStep>
-            <HowStep n={3} title="A trace">
+            <HowStep n={3} title="A trace" visual={<HowTrace />}>
               Every step, the whole call stack and every value, written in one language-neutral format: <code>array</code>, <code>map</code>, <code>ref</code>,
               not <code>vector</code> or <code>dict</code>.
             </HowStep>
-            <HowStep n={4} title="The canvas">
+            <HowStep n={4} title="The canvas" visual={<HowCanvas />}>
               Each structure gets a card. Step forward, back, or scrub; what changed is highlighted, and so is what the line read.
             </HowStep>
           </ol>
@@ -205,15 +205,101 @@ function ExampleCard({ example }: { example: Example }) {
   );
 }
 
-function HowStep({ n, title, children }: { n: number; title: string; children: ReactNode }) {
+/**
+ * One step of How it works: its number on the rail that joins the steps, its title and text, and
+ * beside them (under them on narrow screens) a small picture of what that step looks like, taken
+ * from the Reverse Linked List example the preview replays.
+ */
+function HowStep({ n, title, visual, children }: { n: number; title: string; visual: ReactNode; children: ReactNode }) {
   return (
     <li className="how-step">
-      <span className="how-n" aria-hidden="true">
-        {n}
+      <span className="how-rail" aria-hidden="true">
+        <span className="how-n">{n}</span>
       </span>
-      <h3 className="how-title">{title}</h3>
-      <p className="how-text">{children}</p>
+      <div className="how-body">
+        <h3 className="how-title">{title}</h3>
+        <p className="how-text">{children}</p>
+      </div>
+      <div className="how-visual">{visual}</div>
     </li>
+  );
+}
+
+/** Step 1: the class as pasted, its commented node definition, and an example. */
+function HowCode() {
+  return (
+    <pre className="how-sample" aria-label="A Solution class with its commented ListNode, and an example input">
+      <span className="tok-comment">{"/* struct ListNode { int val; ListNode *next; }; */"}</span>
+      {"\n"}
+      <span className="tok-keyword">class</span>
+      {" Solution {\n"}
+      <span className="tok-keyword">public</span>
+      {":\n    ListNode* reverseList(ListNode* head) { \u2026 }\n};\n\n"}
+      <span className="how-sample-muted">Input:</span>
+      {" head = [4,8,15,16,23]"}
+    </pre>
+  );
+}
+
+const SANDBOX_LIMITS = ["no network", "read-only files", "10 s to run", "a memory cap", "one container per run"];
+
+/** Step 2: the container and its limits (docs/sandboxing.md §3). */
+function HowSandbox() {
+  return (
+    <div className="how-box">
+      <span className="how-box-title">isolated container · gVisor</span>
+      <ul className="how-chips">
+        {SANDBOX_LIMITS.map((l) => (
+          <li key={l} className="how-chip">
+            {l}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+/** Step 3: part of a real step of the Reverse Linked List trace (step 7), with "…" for what is left out. */
+function HowTrace() {
+  const str = (t: string) => <span className="tok-string">{t}</span>;
+  return (
+    <pre className="how-sample" aria-label="Part of one step of a trace, in JSON">
+      {'{"step": 7,\n "frames": [{"id": '}
+      {str('"f1"')}
+      {', "function": '}
+      {str('"reverseList"')}
+      {', "line": 7,\n   "locals": {\n     "prev": {"kind": '}
+      {str('"ref"')}
+      {', "id": '}
+      {str('"n1"')}
+      {'},\n     "curr": {"kind": '}
+      {str('"ref"')}
+      {', "id": '}
+      {str('"n2"')}
+      {'}, \u2026}}],\n "heap": {"n1": {"kind": '}
+      {str('"object"')}
+      {', "fields": {"val": 4, \u2026}}, \u2026}}'}
+    </pre>
+  );
+}
+
+/** Step 4: the same step drawn as a card: 4 already reversed (prev), 8 onward still ahead (curr). */
+function HowCanvas() {
+  const values = [4, 8, 15, 16, 23];
+  return (
+    <figure className="how-box how-card" aria-label="A linked list card: prev on 4, curr on 8, then 15, 16, and 23">
+      <figcaption className="how-card-head">
+        <span className="how-card-name">head</span> · linked list · 5
+      </figcaption>
+      <ol className="how-nodes" aria-hidden="true">
+        {values.map((v, i) => (
+          <li key={v} className={`how-node${i === 0 ? " is-prev" : i === 1 ? " is-curr" : ""}${i >= 2 ? " has-link" : ""}`}>
+            <span className="how-node-tag">{i === 0 ? "prev" : i === 1 ? "curr" : ""}</span>
+            <span className="how-node-box">{v}</span>
+          </li>
+        ))}
+      </ol>
+    </figure>
   );
 }
 

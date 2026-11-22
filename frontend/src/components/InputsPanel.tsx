@@ -12,8 +12,8 @@ interface Props {
 type Note = { tone: "ok" | "info" | "error"; text: string } | null;
 
 /**
- * The inputs: one field per parameter of the chosen method, and a box for a LeetCode example
- * as LeetCode writes it. Pasting into the box fills the fields at once; "Fill fields" is for
+ * The inputs: one field per parameter of the chosen method, and a box for an example
+ * (`Input: name = value, ...`). Pasting into the box fills the fields at once; "Fill fields" is for
  * edits typed by hand. Run code is in the top bar; this panel says why it is disabled, and
  * shows a failed run's error under the inputs that caused it.
  */
@@ -98,7 +98,7 @@ export function InputsPanel({ inputs, example, preset }: Props) {
       </div>
 
       <div className="divider-label">
-        <span>or paste a LeetCode example</span>
+        <span>or paste an example</span>
       </div>
 
       <div className="example">
@@ -118,10 +118,10 @@ export function InputsPanel({ inputs, example, preset }: Props) {
               setNote(next.trim() ? { tone: "info", text: "Edited by hand. Fill fields to update them." } : null);
             }
           }}
-          placeholder={example?.text ?? "Input: nums = [2,7,11,15], target = 9\nOutput: [0,1]"}
+          placeholder={example?.text ?? "Input: nums = [5,1,8,3], target = 11\nOutput: [2,3]"}
           rows={3}
           spellCheck={false}
-          aria-label="LeetCode example"
+          aria-label="Example"
         />
         <div className="example-actions">
           <button type="button" className="control" onClick={() => void fill(text, "button")} disabled={!text.trim()}>

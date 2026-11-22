@@ -25,7 +25,7 @@ function inputs(over: Partial<Inputs> = {}): Inputs {
     signatureError: null,
     method,
     fields: fieldsFor(method),
-    values: { nums: "[2,7,11,15]", target: "9" },
+    values: { nums: "[5,1,8,3]", target: "11" },
     blocked: null,
     run: { status: "idle" },
     chooseMethod: () => {},
@@ -42,7 +42,7 @@ describe("InputsPanel", () => {
   it("one labeled field per parameter, with its type and value", () => {
     const out = html(inputs());
     expect(out).toContain('aria-label="nums (array&lt;int&gt;)"');
-    expect(out).toContain('value="[2,7,11,15]"');
+    expect(out).toContain('value="[5,1,8,3]"');
     expect(out).toContain('aria-label="target (int)"');
     expect(out).not.toContain('aria-label="Method"'); // one method: no picker
   });
@@ -73,14 +73,14 @@ describe("InputsPanel", () => {
   });
 
   it("the starter's example is ghost text: in the fields of its method, and in the example box", () => {
-    const example = { method: "twoSum", values: { nums: "[2,7,11,15]", target: "9" }, text: "Input: nums = [2,7,11,15], target = 9\nOutput: [0,1]" };
+    const example = { method: "twoSum", values: { nums: "[5,1,8,3]", target: "11" }, text: "Input: nums = [5,1,8,3], target = 11\nOutput: [2,3]" };
     const out = html(inputs({ values: { nums: "", target: "" } }), example);
-    expect(out).toContain('placeholder="[2,7,11,15]"');
-    expect(out).toContain('placeholder="9"');
-    expect(out).toContain("Output: [0,1]");
+    expect(out).toContain('placeholder="[5,1,8,3]"');
+    expect(out).toContain('placeholder="11"');
+    expect(out).toContain("Output: [2,3]");
     // Another method keeps the type's own placeholder.
     const other = html(inputs({ method: helper, signature: { methods: [helper], method: "helper" }, values: { a: "" } }), example);
-    expect(other).not.toContain('placeholder="[2,7,11,15]"');
+    expect(other).not.toContain('placeholder="[5,1,8,3]"');
   });
 
   it("Fill fields stays under the example box, disabled while it is empty", () => {

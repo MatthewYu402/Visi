@@ -56,7 +56,7 @@ One screen, dark theme, no page scroll on a 1440×900 window. Panels are separat
 │   one field per parameter    │   Line i  statement  →  true / x = 4      │
 │                              │   Locals | Output (when it printed)       │
 │                              │   name · kind · value  (one row / local)  │
-│   or paste a LeetCode example│   result or "did not return" (last step)  │
+│   or paste an example        │   result or "did not return" (last step)  │
 │   Fill fields · why Run waits│   before a run: "No trace yet"            │
 ├──────────────────────────────┴───────────────────────────────────────────┤
 │ PLAYBACK  Restart │ ◀ ▶ ▶ ⏭  Step 5 / 9  ──────●────────────  0.5× 1× 2× │
@@ -64,7 +64,7 @@ One screen, dark theme, no page scroll on a 1440×900 window. Panels are separat
           ◄── drag ──►                        ▲ drag ▼
 ```
 
-The **(i)** beside the Code title is an info button (`components/PasteHint.tsx`). Its note asks for the code exactly as LeetCode gives it, with the comments above the `Solution`: those comments define `ListNode`, `TreeNode`, or `Node`, and the driver reads them to know how linked lists, trees, and graphs are built ([driver-generation.md](driver-generation.md)). The note shows on hover and on keyboard focus, a tap shows it on a touch screen, and Escape hides it.
+The **(i)** beside the Code title is an info button (`components/PasteHint.tsx`). Its note asks for the Solution class in the LeetCode format, with the comments above it, which Visi builds on: those comments define `ListNode`, `TreeNode`, or `Node`, and the driver reads them to know how linked lists, trees, and graphs are built ([driver-generation.md](driver-generation.md)). The note shows on hover and on keyboard focus, a tap shows it on a touch screen, and Escape hides it.
 
 Every split is resizable by dragging the border between panels: the left / right split horizontally, and the code / inputs and visual / state splits vertically. The split sizes are plain UI state and are not saved.
 
@@ -74,7 +74,7 @@ Every split is resizable by dragging the border between panels: the left / right
 |---|---|---|
 | `trace/loader.ts` | Parses the JSON text, checks `version`, returns a trace or an error | Raw text |
 | `trace/types.ts` | TypeScript types that mirror the schema | Nothing |
-| `trace/format.ts` | Turns any value into compact text (`[2, 7, 11, 15]`, `{2: 0}`, `∞`) | One value |
+| `trace/format.ts` | Turns any value into compact text (`[5, 1, 8, 3]`, `{5: 0}`, `∞`) | One value |
 | `trace/diff.ts` | `diff(prev, curr)`: what changed between two steps | Two steps |
 | `player/playback.ts` | Pure reducer for the step index and Run / Pause | Actions |
 | `player/usePlayer.ts` | Wraps the reducer and owns the Run timer | Step count, speed |
@@ -91,7 +91,7 @@ Every split is resizable by dragging the border between panels: the left / right
 | `components/Toolbar.tsx` | The top bar: logo and name, language select, the call-stack switch, the theme button, Run code | Language, run state, theme |
 | `components/PlaybackBar.tsx` | The bottom bar: Restart, previous, play/pause, next, last, the counter, the scrubber with a tick per step, speed. The scrubber's dot is drawn (`.scrubber-dot`), not the range input's own thumb, so a step is one motion: the line moves (180 ms), then the dot fades in where it stops (140 ms), 320 ms in all, inside one step at 2×. While the reader drags, both follow the pointer at once | Player state |
 | `components/CodePanel.tsx` | Monaco with the line decoration; rebuilds the editor theme when the page's theme changes | Source, `step.line`, theme |
-| `components/PasteHint.tsx` | The info button beside the Code title: paste LeetCode's code with its comments | Nothing |
+| `components/PasteHint.tsx` | The info button beside the Code title: paste the Solution class with its comments | Nothing |
 | `components/VisualPanel.tsx` | The line strip, then one card per linked structure, one per other container local, and the calls card at the bottom, or a notice / error; while a run is going, `RunningCanvas` instead | One step, its diff, the per-trace layout and call tree, the call-stack switch, whether a run is going |
 | `components/RunningCanvas.tsx` | The canvas while the sandbox makes a trace: a line of trace points drawing itself, and what the sandbox is doing | Nothing |
 | `components/StatePanel.tsx` | "Step N of M" with a progress bar, the running line (its statement and what it produced), and the running frame's locals as a table, plus `result` on the last step, and an Output tab when the program printed ([Section 9](#9-state-panel)) | One step, its diff, the code the run was made from, the run's output |
@@ -483,8 +483,8 @@ Switching language replaces the source with that language's starter. The languag
 The inputs panel turns the pasted Solution into a form ([`backend.md`](backend.md) §2.2):
 
 1. **The signature.** 400 ms after the source stops changing, `POST /api/signature` returns the public methods, each parameter's name and neutral type, and the method to preselect. A request still in flight when the source changes again is cancelled. If the new source cannot be read, the last good fields stay, with the error above them, so typing does not make the form flicker.
-2. **The fields.** One per parameter of the chosen method, labeled with its name and neutral type (`nums array<int>`), with LeetCode's notation for that type as the placeholder (`[1,2,3]`, `[3,9,20,null,null,15,7]`). For the starter's own method, `twoSum`, the placeholders are Two Sum's example (`[2,7,11,15]`, `9`), ghost text that goes as the user types. An extra such as `pos` is an optional field. A method picker appears only when the Solution has several public methods. A value typed earlier is kept when the signature changes but the field still exists.
-3. **Paste a LeetCode example.** Pasting the whole example block from the problem page (`Input: ... Output: ...`) into the box under the fields fills them at once: by name, or in order when none of the names match (Clone Graph's `adjList` for the parameter `node`), as the driver does. A note says which fields were filled. "Fill fields" under the box does the same for an example edited by hand. An example is the whole input, so an optional extra it leaves out is emptied: a `pos = 1` kept from Linked List Cycle would otherwise turn the next problem's list into a cycle, which ran Remove Nth Node to the step cap and made Middle of the Linked List fail with "pos = 1 is not an index of head" (`clearedExtras`).
+2. **The fields.** One per parameter of the chosen method, labeled with its name and neutral type (`nums array<int>`), with the notation for that type as the placeholder (`[1,2,3]`, `[1,2,3,4,null,null,5]`). For the starter's own method, `twoSum`, the placeholders are Two Sum's example (`[2,7,11,15]`, `9`), ghost text that goes as the user types. An extra such as `pos` is an optional field. A method picker appears only when the Solution has several public methods. A value typed earlier is kept when the signature changes but the field still exists.
+3. **Paste an example.** Pasting a whole example block (`Input: ... Output: ...`) into the box under the fields fills them at once: by name, or in order when none of the names match (Clone Graph's `adjList` for the parameter `node`), as the driver does. A note says which fields were filled. "Fill fields" under the box does the same for an example edited by hand. An example is the whole input, so an optional extra it leaves out is emptied: a `pos = 1` kept from Linked List Cycle would otherwise turn the next problem's list into a cycle, which ran Remove Nth Node to the step cap and made Middle of the Linked List fail with "pos = 1 is not an index of head" (`clearedExtras`).
 4. **Run code** is in the top bar (and Cmd/Ctrl + Enter). Disabled until every required field has a value; the inputs panel says why ("Fill in target."). It sends the source, the language, the method, and the fields to `POST /api/run`, and shows a spinner meanwhile. The canvas shows the run is going (`RunningCanvas`): a line of trace points drawing itself on a loop, "Running your code in the sandbox", and "Compiling it, tracing every step, and checking the trace". The run is one request, so no stage is named as the current one. With reduced motion the line is drawn whole and still. A trace that comes back goes through the loader and replaces the last one in the player, which restarts at step 0. A failure shows a red card in the inputs panel with its stage as a heading ("The code does not compile") and the message, such as Clang's error with the line. A successful run adds nothing to the inputs panel: the canvas shows it.
 
 ### 10.2 The Examples menu
@@ -589,7 +589,10 @@ The page scrolls (the sandbox does not), inside `.home`, since `body` never scro
 ├──────────────────────────────────────────────────────────────────────────┤
 │ Start from an example        eight cards, three to a row                 │
 ├──────────────────────────────────────────────────────────────────────────┤
-│ How it works   1 Solution + example › 2 sandbox › 3 trace › 4 canvas     │
+│ How it works   ① Solution + example   the class and an input             │
+│                ② Run in a sandbox     its limits as chips                │
+│                ③ A trace              part of one step's JSON            │
+│                ④ The canvas           that step as a card                │
 ├──────────────────────────────────────────────────────────────────────────┤
 │ Languages      ● C++ available   ● Python available   ● Java available   │
 │ eye · Visi · Apache License 2.0      <> GitHub  ✉ email   │
@@ -604,7 +607,8 @@ The page scrolls (the sandbox does not), inside `.home`, since `body` never scro
 - **The preview** (`home/Preview.tsx`) replays the Reverse Linked List golden trace (`fixtures/reverse-list.trace.json`) with the same `VisualPanel` the sandbox uses, beside its source (`fixtures/reverse_list_trace.cpp`) with the running line highlighted the way the editor highlights it. It plays by itself (1.1 s a step, a 2.6 s pause on the last step, then from the start), and the reader can pause or step it; stepping pauses it. With the system's "reduce motion" setting on it waits for the play button. It is at the page's full width, because a linked list of five nodes needs about 700 px; under 640 px the canvas is drawn at 70% (`zoom`, which shrinks the layout too, unlike a transform) and the code sits above it.
 - **Logo.** The author's eye, two files in `src/assets/` (white for the dark theme, black for the light one). `components/Logo.tsx` puts both in the page and CSS shows the one for `data-theme`. It is in the home page's bar and footer, and replaces the earlier rising-line mark in the sandbox's top bar.
 - **Theme.** The bar has the same theme button as the sandbox, and every colour comes from the tokens ([Section 11](#11-theme-tokens)): no new token was needed.
-- **Below 1040 px** the four "how it works" steps go two to a row; **below 640 px** one, the bar drops the name, and the title shrinks so its first line stays whole.
+- **How it works** is four steps on one vertical rail: each has its number on the rail, its title and text, and beside them a small picture of what the step looks like, all from the Reverse Linked List example the preview replays: the class with its commented `ListNode` and an input, the sandbox's limits as chips, part of a real step of the trace (step 7, with `…` for what is left out), and that step as a linked-list card. It replaced four small boxes in a row joined by arrows, whose numbers and arrows sat at their top edge (design canvas, Round 6, option C). The code and JSON samples scroll sideways inside their own boxes, so the page never does.
+- **Below 1040 px** each step's picture goes under its text; **below 640 px** the numbers shrink and the gutter narrows, the bar drops the name, and the title shrinks so its first line stays whole.
 
 ### 12.3 Examples
 `home/examples.ts` lists eight problems, one per topic, the same eight as the sandbox's Examples menu ([Section 10.2](#102-the-examples-menu)): Two Sum, Container With Most Water, Valid Parentheses, Reverse Linked List, Maximum Depth of Binary Tree, Course Schedule, Subsets, and Unique Paths. Each has its Solution in C++, Python, and Java. Each card shows the title, the difficulty, one sentence on what to watch, and tags in the canvas's words, and opens the C++ version; the menu opens the others.

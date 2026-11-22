@@ -52,7 +52,7 @@ export function monacoLanguage(id: EditorLanguage): string {
 }
 
 /**
- * What the page opens with: the bare Two Sum Solution in each language, as LeetCode gives it.
+ * What the page opens with: the bare Two Sum Solution class in each language, in the format LeetCode uses.
  * There is no trace until the user runs it.
  */
 export const TEMPLATES: Record<EditorLanguage, string> = {
@@ -76,11 +76,11 @@ public:
 };
 
 /**
- * Two Sum's first example, shown as placeholder text: in the example box, and in a field
+ * The starter's example, shown as placeholder text: in the example box, and in a field
  * whose method and name match, so the starter shows what to type until the user types.
  */
 export const STARTER_EXAMPLE = {
   method: "twoSum",
-  values: { nums: "[2,7,11,15]", target: "9" } as Record<string, string>,
-  text: "Input: nums = [2,7,11,15], target = 9\nOutput: [0,1]",
+  values: { nums: "[5,1,8,3]", target: "11" } as Record<string, string>,
+  text: "Input: nums = [5,1,8,3], target = 11\nOutput: [2,3]",
 };

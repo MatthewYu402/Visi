@@ -59,7 +59,7 @@ export interface RunRequest {
   /** "cpp" or "python": which driver and sandbox the backend uses. Absent means C++. */
   language?: string;
   method: string | null;
-  /** One value per parameter (and per extra), as LeetCode writes it: {"nums": "[2,7,11,15]", "target": "9"}. */
+  /** One value per parameter (and per extra), in LeetCode's format: {"nums": "[5,1,8,3]", "target": "11"}. */
   fields: Record<string, string>;
 }
 

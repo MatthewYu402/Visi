@@ -17,7 +17,7 @@ const hasCycle: Method = { name: "hasCycle", params: [{ name: "head", type: "Lis
 const cloneGraph: Method = { name: "cloneGraph", params: [{ name: "node", type: "Node" }], returns: "Node", extras: [], readable: true, note: "" };
 
 describe("fields", () => {
-  it("one field per parameter, typed, with LeetCode's notation as the placeholder", () => {
+  it("one field per parameter, typed, with the notation as the placeholder", () => {
     expect(fieldsFor(twoSum)).toEqual([
       { name: "nums", type: "array<int>", optional: false, placeholder: "[1,2,3]" },
       { name: "target", type: "int", optional: false, placeholder: "9" },
@@ -39,7 +39,7 @@ describe("fields", () => {
   it("placeholders for nested and node types", () => {
     expect(placeholderFor("array<array<int>>")).toBe("[[1,2,3],[1,2,3]]");
     expect(placeholderFor("array<string>")).toBe('["ab","cd"]');
-    expect(placeholderFor("TreeNode")).toBe("[3,9,20,null,null,15,7]");
+    expect(placeholderFor("TreeNode")).toBe("[1,2,3,4,null,null,5]");
     expect(placeholderFor("Node")).toBe("");
   });
 });
@@ -66,18 +66,18 @@ describe("values", () => {
   });
 
   it("the request carries the method and every field, as typed", () => {
-    expect(runRequest("src", twoSum, fieldsFor(twoSum), { nums: "[2,7,11,15]", target: "9" })).toEqual({
+    expect(runRequest("src", twoSum, fieldsFor(twoSum), { nums: "[5,1,8,3]", target: "11" })).toEqual({
       source: "src",
       method: "twoSum",
-      fields: { nums: "[2,7,11,15]", target: "9" },
+      fields: { nums: "[5,1,8,3]", target: "11" },
     });
-    expect(runRequest("src", twoSum, fieldsFor(twoSum), { nums: "[1]", target: "9" }, "python").language).toBe("python");
+    expect(runRequest("src", twoSum, fieldsFor(twoSum), { nums: "[1]", target: "11" }, "python").language).toBe("python");
   });
 });
 
 describe("filling from a pasted example", () => {
   it("by name", () => {
-    expect(valuesFromExample(fieldsFor(twoSum), { nums: "[2,7,11,15]", target: "9" })).toEqual({ nums: "[2,7,11,15]", target: "9" });
+    expect(valuesFromExample(fieldsFor(twoSum), { nums: "[5,1,8,3]", target: "11" })).toEqual({ nums: "[5,1,8,3]", target: "11" });
     expect(valuesFromExample(fieldsFor(hasCycle), { head: "[3,2,0,-4]", pos: "1" })).toEqual({ head: "[3,2,0,-4]", pos: "1" });
   });
 

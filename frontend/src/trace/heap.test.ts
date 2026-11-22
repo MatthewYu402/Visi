@@ -38,7 +38,7 @@ describe("edges", () => {
 
 describe("nodes", () => {
   it("the label is val, and the shape comes from the fields", () => {
-    expect(nodeLabel(reverseList.steps[0].heap.n1)).toBe("1");
+    expect(nodeLabel(reverseList.steps[0].heap.n1)).toBe("4");
     expect(shapeOf(reverseList.steps[0].heap.n1)).toBe("list");
     expect(shapeOf(maxDepth.steps[0].heap.n1)).toBe("tree");
     expect(shapeOf(cloneGraph.steps[0].heap.n1)).toBe("graph");

@@ -11,8 +11,8 @@ describe("PasteHint", () => {
     expect(html).toContain(`role="tooltip" id="${id}"`);
   });
 
-  it("tells people to paste LeetCode's code with its comments, and why", () => {
-    expect(PASTE_HINT).toMatch(/exactly as LeetCode gives it/);
+  it("tells people to paste the Solution class with its comments, and why", () => {
+    expect(PASTE_HINT).toMatch(/Solution class in the LeetCode format, with the comments above it/);
     expect(PASTE_HINT).toMatch(/comments/);
     expect(PASTE_HINT).toMatch(/ListNode, TreeNode, or Node/);
     expect(renderToStaticMarkup(<PasteHint />)).toContain(PASTE_HINT);

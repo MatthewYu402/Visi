@@ -26,7 +26,7 @@ export interface Inputs {
   run: RunState;
   chooseMethod: (name: string) => void;
   setValue: (name: string, value: string) => void;
-  /** Fills the fields from a pasted LeetCode example. Resolves to the names it filled, or an error message. */
+  /** Fills the fields from a pasted example. Resolves to the names it filled, or an error message. */
   fillFromExample: (text: string) => Promise<FillResult>;
   start: () => void;
 }

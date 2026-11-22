@@ -2,7 +2,7 @@ import { useId, useState } from "react";
 
 /** What the info button next to the Code panel's title says. */
 export const PASTE_HINT =
-  "Paste the code exactly as LeetCode gives it, with the comments above the Solution. Those comments define ListNode, TreeNode, or Node, and the visualizer reads them to know how your linked lists, trees, and graphs are built.";
+  "Paste your Solution class in the LeetCode format, with the comments above it. Those comments define ListNode, TreeNode, or Node, and Visi builds on them to know how your linked lists, trees, and graphs are made.";
 
 /**
  * An info button beside the Code title. Its note shows on hover and on keyboard focus, and a tap

@@ -9,9 +9,9 @@ import type { EditorLanguage } from "../editor/languages";
 export interface ExampleSolution {
   /** The case's number in docs/manual-test-suite.md. */
   suiteCase: number;
-  /** The Solution, as LeetCode gives it (with its commented node definitions). */
+  /** The Solution class, in LeetCode's format (with its commented node definitions). */
   code: string;
-  /** The example, as LeetCode writes it: "Input: ...\nOutput: ...". */
+  /** The example: "Input: ...\nOutput: ...". */
   text: string;
 }
 
@@ -56,7 +56,7 @@ public:
     }
 };
 `,
-        text: "Input: nums = [3,2,4,6], target = 10\nOutput: [2,3]\n",
+        text: "Input: nums = [4,9,1,6], target = 7\nOutput: [2,3]\n",
       },
       python: {
         suiteCase: 71,
@@ -70,7 +70,7 @@ public:
             numMap[nums[i]] = i
         return []
 `,
-        text: "Input: nums = [3,2,4,6], target = 10\nOutput: [2,3]\n",
+        text: "Input: nums = [4,9,1,6], target = 7\nOutput: [2,3]\n",
       },
       java: {
         suiteCase: 85,
@@ -88,7 +88,7 @@ public:
     }
 }
 `,
-        text: "Input: nums = [3,2,4,6], target = 10\nOutput: [2,3]\n",
+        text: "Input: nums = [4,9,1,6], target = 7\nOutput: [2,3]\n",
       },
     },
   },
@@ -120,7 +120,7 @@ public:
     }
 };
 `,
-        text: "Input: height = [1,8,6,2,5,4,8,3,7]\nOutput: 49\n",
+        text: "Input: height = [2,7,4,1,8,3,6]\nOutput: 30\n",
       },
       python: {
         suiteCase: 94,
@@ -137,7 +137,7 @@ public:
                 right -= 1
         return best
 `,
-        text: "Input: height = [1,8,6,2,5,4,8,3,7]\nOutput: 49\n",
+        text: "Input: height = [2,7,4,1,8,3,6]\nOutput: 30\n",
       },
       java: {
         suiteCase: 86,
@@ -158,7 +158,7 @@ public:
     }
 }
 `,
-        text: "Input: height = [1,8,6,2,5,4,8,3,7]\nOutput: 49\n",
+        text: "Input: height = [2,7,4,1,8,3,6]\nOutput: 30\n",
       },
     },
   },
@@ -192,7 +192,7 @@ public:
     }
 };
 `,
-        text: "Input: s = \"([]{})\"\nOutput: true\n",
+        text: "Input: s = \"{[()()]}\"\nOutput: true\n",
       },
       python: {
         suiteCase: 72,
@@ -209,7 +209,7 @@ public:
                 stack.append(c)
         return not stack
 `,
-        text: "Input: s = \"([]{})\"\nOutput: true\n",
+        text: "Input: s = \"{[()()]}\"\nOutput: true\n",
       },
       java: {
         suiteCase: 87,
@@ -231,7 +231,7 @@ public:
     }
 }
 `,
-        text: "Input: s = \"([]{})\"\nOutput: true\n",
+        text: "Input: s = \"{[()()]}\"\nOutput: true\n",
       },
     },
   },
@@ -270,7 +270,7 @@ public:
     }
 };
 `,
-        text: "Input: head = [1,2,3,4,5]\nOutput: [5,4,3,2,1]\n",
+        text: "Input: head = [4,8,15,16,23]\nOutput: [23,16,15,8,4]\n",
       },
       python: {
         suiteCase: 77,
@@ -289,7 +289,7 @@ class Solution:
             curr = nxt
         return prev
 `,
-        text: "Input: head = [1,2,3,4,5]\nOutput: [5,4,3,2,1]\n",
+        text: "Input: head = [4,8,15,16,23]\nOutput: [23,16,15,8,4]\n",
       },
       java: {
         suiteCase: 88,
@@ -317,7 +317,7 @@ class Solution {
     }
 }
 `,
-        text: "Input: head = [1,2,3,4,5]\nOutput: [5,4,3,2,1]\n",
+        text: "Input: head = [4,8,15,16,23]\nOutput: [23,16,15,8,4]\n",
       },
     },
   },
@@ -354,7 +354,7 @@ public:
     }
 };
 `,
-        text: "Input: root = [3,9,20,null,null,15,7]\nOutput: 3\n",
+        text: "Input: root = [1,2,3,4,null,null,5,null,6]\nOutput: 4\n",
       },
       python: {
         suiteCase: 78,
@@ -372,7 +372,7 @@ class Solution:
         right = self.maxDepth(root.right)
         return 1 + max(left, right)
 `,
-        text: "Input: root = [3,9,20,null,null,15,7]\nOutput: 3\n",
+        text: "Input: root = [1,2,3,4,null,null,5,null,6]\nOutput: 4\n",
       },
       java: {
         suiteCase: 89,
@@ -402,7 +402,7 @@ class Solution {
     }
 }
 `,
-        text: "Input: root = [3,9,20,null,null,15,7]\nOutput: 3\n",
+        text: "Input: root = [1,2,3,4,null,null,5,null,6]\nOutput: 4\n",
       },
     },
   },
@@ -442,7 +442,7 @@ public:
     }
 };
 `,
-        text: "Input: numCourses = 4, prerequisites = [[1,0],[2,0],[3,1],[3,2]]\nOutput: true\n",
+        text: "Input: numCourses = 5, prerequisites = [[1,0],[2,1],[3,1],[4,2],[4,3]]\nOutput: true\n",
       },
       python: {
         suiteCase: 96,
@@ -464,7 +464,7 @@ public:
                     ready.append(nxt)
         return taken == numCourses
 `,
-        text: "Input: numCourses = 4, prerequisites = [[1,0],[2,0],[3,1],[3,2]]\nOutput: true\n",
+        text: "Input: numCourses = 5, prerequisites = [[1,0],[2,1],[3,1],[4,2],[4,3]]\nOutput: true\n",
       },
       java: {
         suiteCase: 97,
@@ -493,7 +493,7 @@ public:
     }
 }
 `,
-        text: "Input: numCourses = 4, prerequisites = [[1,0],[2,0],[3,1],[3,2]]\nOutput: true\n",
+        text: "Input: numCourses = 5, prerequisites = [[1,0],[2,1],[3,1],[4,2],[4,3]]\nOutput: true\n",
       },
     },
   },
@@ -526,7 +526,7 @@ public:
     }
 };
 `,
-        text: "Input: nums = [1,2,3]\nOutput: [[],[1],[1,2],[1,2,3],[1,3],[2],[2,3],[3]]\n",
+        text: "Input: nums = [4,5,6]\nOutput: [[],[4],[4,5],[4,5,6],[4,6],[5],[5,6],[6]]\n",
       },
       python: {
         suiteCase: 81,
@@ -543,7 +543,7 @@ public:
         backtrack(0)
         return res
 `,
-        text: "Input: nums = [1,2,3]\nOutput: [[],[1],[1,2],[1,2,3],[1,3],[2],[2,3],[3]]\n",
+        text: "Input: nums = [4,5,6]\nOutput: [[],[4],[4,5],[4,5,6],[4,6],[5],[5,6],[6]]\n",
       },
       java: {
         suiteCase: 91,
@@ -565,7 +565,7 @@ public:
     }
 }
 `,
-        text: "Input: nums = [1,2,3]\nOutput: [[],[1],[1,2],[1,2,3],[1,3],[2],[2,3],[3]]\n",
+        text: "Input: nums = [4,5,6]\nOutput: [[],[4],[4,5],[4,5,6],[4,6],[5],[5,6],[6]]\n",
       },
     },
   },
@@ -592,7 +592,7 @@ public:
     }
 };
 `,
-        text: "Input: m = 3, n = 4\nOutput: 10\n",
+        text: "Input: m = 3, n = 5\nOutput: 15\n",
       },
       python: {
         suiteCase: 98,
@@ -604,7 +604,7 @@ public:
                 dp[r][c] = dp[r - 1][c] + dp[r][c - 1]
         return dp[m - 1][n - 1]
 `,
-        text: "Input: m = 3, n = 4\nOutput: 10\n",
+        text: "Input: m = 3, n = 5\nOutput: 15\n",
       },
       java: {
         suiteCase: 99,
@@ -621,7 +621,7 @@ public:
     }
 }
 `,
-        text: "Input: m = 3, n = 4\nOutput: 10\n",
+        text: "Input: m = 3, n = 5\nOutput: 15\n",
       },
     },
   },

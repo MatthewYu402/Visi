@@ -3809,62 +3809,236 @@ select.field-input {
   gap: 8px;
 }
 
+/* How it works: the steps on one rail, each with a picture of what it looks like. Three columns
+   (number, text, picture) on wide screens; on narrower ones the picture goes under the text. */
 .how {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 14px;
-  counter-reset: how;
+  max-width: 1040px;
 }
 
 .how-step {
-  position: relative;
-  padding: 18px;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: var(--bg-subtle);
+  display: grid;
+  grid-template-columns: 44px minmax(0, 400px) minmax(0, 1fr);
+  column-gap: 28px;
 }
 
-/* An arrow from each step to the next. */
-.how-step:not(:last-child)::after {
+/* The number, and below it the rail down to the next step's number. */
+.how-rail {
+  grid-row: span 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.how-rail::after {
   content: "";
-  position: absolute;
-  top: 30px;
-  right: -11px;
-  width: 8px;
-  height: 8px;
-  border-top: 1.5px solid var(--edge);
-  border-right: 1.5px solid var(--edge);
-  transform: rotate(45deg);
+  width: 2px;
+  flex-grow: 1;
+  background: var(--border-strong);
+}
+
+.how-step:last-child .how-rail::after {
+  display: none;
 }
 
 .how-n {
-  width: 26px;
-  height: 26px;
-  display: inline-flex;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 8px;
-  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  border: 1.5px solid var(--accent);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
   color: var(--accent-fg);
   font-family: var(--font-mono);
-  font-size: 12.5px;
+  font-size: 16px;
   font-weight: 600;
 }
 
+.how-body {
+  padding: 8px 0 40px;
+  min-width: 0;
+}
+
 .how-title {
-  margin: 14px 0 0;
-  font-size: 14.5px;
+  margin: 0;
+  font-size: 19px;
   font-weight: 600;
 }
 
 .how-text {
-  margin: 6px 0 0;
-  font-size: 13px;
-  line-height: 1.55;
+  margin: 8px 0 0;
+  font-size: 15px;
+  line-height: 1.6;
   color: var(--fg-muted);
+}
+
+.how-visual {
+  min-width: 0;
+  padding-bottom: 40px;
+}
+
+.how-step:last-child .how-body,
+.how-step:last-child .how-visual {
+  padding-bottom: 0;
+}
+
+/* A code or JSON sample: scrolls sideways inside its box, so the page never does. */
+.how-sample {
+  margin: 0;
+  padding: 16px 18px;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg-inset);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--fg-soft);
+  white-space: pre;
+}
+
+.how-sample .tok-comment {
+  color: var(--syntax-comment);
+}
+
+.how-sample .tok-keyword {
+  color: var(--syntax-keyword);
+}
+
+.how-sample .tok-string {
+  color: var(--syntax-string);
+}
+
+.how-sample-muted {
+  color: var(--fg-muted);
+}
+
+.how-box {
+  margin: 0;
+  padding: 16px 18px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg-inset);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.how-box-title {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--fg-soft);
+}
+
+.how-chips {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.how-chip {
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg-raised);
+  font-size: 12.5px;
+  color: var(--fg-soft);
+}
+
+.how-card {
+  background: var(--bg-raised);
+  box-shadow: var(--card-shadow);
+}
+
+.how-card-head {
+  font-size: 12.5px;
+  color: var(--fg-muted);
+}
+
+.how-card-name {
+  color: var(--fg);
+  font-weight: 600;
+}
+
+/* The list's nodes in a row that scrolls sideways on a narrow screen. */
+.how-nodes {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 2px;
+  display: flex;
+  gap: 28px;
+  overflow-x: auto;
+}
+
+.how-node {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.how-node-tag {
+  height: 14px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent-fg);
+}
+
+.how-node-box {
+  min-width: 52px;
+  height: 34px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid var(--border-strong);
+  border-radius: 8px;
+  background: var(--bg-inset);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--fg);
+}
+
+.how-node.is-prev .how-node-box {
+  border-color: var(--attention);
+}
+
+.how-node.is-curr .how-node-box {
+  border-color: var(--accent);
+}
+
+/* The link into a node from the one before it: a line and a head, in the canvas's edge colour.
+   The first node has none (4 is already reversed, its next is null). */
+.how-node.has-link::before {
+  content: "";
+  position: absolute;
+  bottom: 16px;
+  right: 100%;
+  width: 22px;
+  height: 1.5px;
+  margin-right: 3px;
+  background: var(--edge);
+}
+
+.how-node.has-link::after {
+  content: "";
+  position: absolute;
+  bottom: 13px;
+  right: calc(100% + 2px);
+  border-left: 7px solid var(--edge);
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
 }
 
 .lang-list {
@@ -3983,11 +4157,14 @@ select.field-input {
     gap: 40px;
     padding-top: 48px;
   }
-  .how {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .how-step {
+    grid-template-columns: 44px minmax(0, 1fr);
   }
-  .how-step::after {
-    display: none;
+  .how-body {
+    padding-bottom: 16px;
+  }
+  .how-step:last-child .how-body {
+    padding-bottom: 16px;
   }
 }
 
@@ -4021,8 +4198,30 @@ select.field-input {
   .preview-caption {
     display: none;
   }
-  .how {
-    grid-template-columns: minmax(0, 1fr);
+  .how-step {
+    grid-template-columns: 32px minmax(0, 1fr);
+    column-gap: 16px;
+  }
+  .how-n {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+  .how-title {
+    font-size: 17px;
+  }
+  .how-text {
+    font-size: 14.5px;
+  }
+  .how-sample {
+    padding: 12px 14px;
+    font-size: 12px;
+  }
+  .how-nodes {
+    gap: 22px;
+  }
+  .how-node.has-link::before {
+    width: 16px;
   }
   .lang-item {
     min-width: 0;

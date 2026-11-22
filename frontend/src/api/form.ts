@@ -2,7 +2,7 @@
 //
 // A form shows one field per parameter of the chosen method, plus one per
 // extra (such as `pos`), which may stay empty. The backend joins the values
-// into LeetCode's example text, so the form sends them as typed.
+// into the example text (`name = value, ...`), so the form sends them as typed.
 
 import type { Method, RunRequest, Signature } from "./client";
 
@@ -12,7 +12,7 @@ export interface Field {
   type: string;
   /** Extras may be left empty. */
   optional: boolean;
-  /** An example of LeetCode's notation for this type, shown when the field is empty. */
+  /** An example of the notation for this type (LeetCode's format), shown when the field is empty. */
   placeholder: string;
 }
 
@@ -56,15 +56,15 @@ export function runRequest(source: string, method: Method, fields: Field[], valu
   return request;
 }
 
-/** LeetCode's notation for a value of this neutral type. */
+/** The notation for a value of this neutral type, in LeetCode's format. */
 export function placeholderFor(type: string): string {
   if (type === "int") return "9";
   if (type === "float") return "2.5";
   if (type === "bool") return "true";
   if (type === "char") return '"a"';
   if (type === "string") return '"abc"';
-  if (type === "ListNode") return "[1,2,3,4,5]";
-  if (type === "TreeNode") return "[3,9,20,null,null,15,7]";
+  if (type === "ListNode") return "[4,8,15,16,23]";
+  if (type === "TreeNode") return "[1,2,3,4,null,null,5]";
   const inner = /^(array|list|deque|stack|queue|set|multiset|priority-queue)<(.*)>$/.exec(type);
   if (inner) {
     const item = inner[2];
@@ -75,7 +75,7 @@ export function placeholderFor(type: string): string {
     if (item === "float") return "[1.5,2.5]";
     return "[1,2,3]";
   }
-  // A commented node class (Node, ...): LeetCode's notation depends on the problem.
+  // A commented node class (Node, ...): its notation depends on the problem.
   return "";
 }
 
