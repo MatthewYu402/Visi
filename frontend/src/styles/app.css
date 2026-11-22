@@ -3809,59 +3809,34 @@ select.field-input {
   gap: 8px;
 }
 
-/* How it works: the steps on one rail, each with a picture of what it looks like. Three columns
-   (number, text, picture) on wide screens; on narrower ones the picture goes under the text. */
+/* How it works: numbered rows across the section's full width, a line between each: the number,
+   the title and text, and a picture of what the step looks like. On narrower screens the picture
+   goes under the text. */
 .how {
   list-style: none;
   margin: 0;
   padding: 0;
-  max-width: 1040px;
+  border-bottom: 1px solid var(--border);
 }
 
 .how-step {
   display: grid;
-  grid-template-columns: 44px minmax(0, 400px) minmax(0, 1fr);
-  column-gap: 28px;
-}
-
-/* The number, and below it the rail down to the next step's number. */
-.how-rail {
-  grid-row: span 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.how-rail::after {
-  content: "";
-  width: 2px;
-  flex-grow: 1;
-  background: var(--border-strong);
-}
-
-.how-step:last-child .how-rail::after {
-  display: none;
+  grid-template-columns: 72px minmax(0, 400px) minmax(0, 1fr);
+  column-gap: 32px;
+  padding: 28px 0;
+  border-top: 1px solid var(--border);
 }
 
 .how-n {
-  width: 44px;
-  height: 44px;
-  flex-shrink: 0;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1.5px solid var(--accent);
-  border-radius: 50%;
-  background: color-mix(in srgb, var(--accent) 12%, transparent);
-  color: var(--accent-fg);
+  grid-row: span 2;
   font-family: var(--font-mono);
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--accent-fg);
 }
 
 .how-body {
-  padding: 8px 0 40px;
   min-width: 0;
 }
 
@@ -3880,12 +3855,6 @@ select.field-input {
 
 .how-visual {
   min-width: 0;
-  padding-bottom: 40px;
-}
-
-.how-step:last-child .how-body,
-.how-step:last-child .how-visual {
-  padding-bottom: 0;
 }
 
 /* A code or JSON sample: scrolls sideways inside its box, so the page never does. */
@@ -4158,13 +4127,11 @@ select.field-input {
     padding-top: 48px;
   }
   .how-step {
-    grid-template-columns: 44px minmax(0, 1fr);
+    grid-template-columns: 64px minmax(0, 1fr);
+    column-gap: 24px;
   }
-  .how-body {
-    padding-bottom: 16px;
-  }
-  .how-step:last-child .how-body {
-    padding-bottom: 16px;
+  .how-visual {
+    margin-top: 18px;
   }
 }
 
@@ -4199,13 +4166,12 @@ select.field-input {
     display: none;
   }
   .how-step {
-    grid-template-columns: 32px minmax(0, 1fr);
-    column-gap: 16px;
+    grid-template-columns: 40px minmax(0, 1fr);
+    column-gap: 14px;
+    padding: 22px 0;
   }
   .how-n {
-    width: 32px;
-    height: 32px;
-    font-size: 14px;
+    font-size: 22px;
   }
   .how-title {
     font-size: 17px;

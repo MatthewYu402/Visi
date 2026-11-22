@@ -589,10 +589,10 @@ The page scrolls (the sandbox does not), inside `.home`, since `body` never scro
 ├──────────────────────────────────────────────────────────────────────────┤
 │ Start from an example        eight cards, three to a row                 │
 ├──────────────────────────────────────────────────────────────────────────┤
-│ How it works   ① Solution + example   the class and an input             │
-│                ② Run in a sandbox     its limits as chips                │
-│                ③ A trace              part of one step's JSON            │
-│                ④ The canvas           that step as a card                │
+│ How it works   01 Solution + example  the class and an input             │
+│                02 Run in a sandbox    its limits as chips                │
+│                03 A trace             part of one step's JSON            │
+│                04 The canvas          that step as a card                │
 ├──────────────────────────────────────────────────────────────────────────┤
 │ Languages      ● C++ available   ● Python available   ● Java available   │
 │ eye · Visi · Apache License 2.0      <> GitHub  ✉ email   │
@@ -607,7 +607,7 @@ The page scrolls (the sandbox does not), inside `.home`, since `body` never scro
 - **The preview** (`home/Preview.tsx`) replays the Reverse Linked List golden trace (`fixtures/reverse-list.trace.json`) with the same `VisualPanel` the sandbox uses, beside its source (`fixtures/reverse_list_trace.cpp`) with the running line highlighted the way the editor highlights it. It plays by itself (1.1 s a step, a 2.6 s pause on the last step, then from the start), and the reader can pause or step it; stepping pauses it. With the system's "reduce motion" setting on it waits for the play button. It is at the page's full width, because a linked list of five nodes needs about 700 px; under 640 px the canvas is drawn at 70% (`zoom`, which shrinks the layout too, unlike a transform) and the code sits above it.
 - **Logo.** The author's eye, two files in `src/assets/` (white for the dark theme, black for the light one). `components/Logo.tsx` puts both in the page and CSS shows the one for `data-theme`. It is in the home page's bar and footer, and replaces the earlier rising-line mark in the sandbox's top bar.
 - **Theme.** The bar has the same theme button as the sandbox, and every colour comes from the tokens ([Section 11](#11-theme-tokens)): no new token was needed.
-- **How it works** is four steps on one vertical rail: each has its number on the rail, its title and text, and beside them a small picture of what the step looks like, all from the Reverse Linked List example the preview replays: the class with its commented `ListNode` and an input, the sandbox's limits as chips, part of a real step of the trace (step 7, with `…` for what is left out), and that step as a linked-list card. It replaced four small boxes in a row joined by arrows, whose numbers and arrows sat at their top edge (design canvas, Round 6, option C). The code and JSON samples scroll sideways inside their own boxes, so the page never does.
+- **How it works** is four numbered rows across the section's full width, with a line between each: the number (`01` to `04`, in the accent colour), the step's title and text, and a small picture of what the step looks like, all from the Reverse Linked List example the preview replays: the class with its commented `ListNode` and an input, the sandbox's limits as chips, part of a real step of the trace (step 7, with `…` for what is left out), and that step as a linked-list card. It replaced four small boxes in a row joined by arrows, whose numbers and arrows sat at their top edge (design canvas, Round 7, option B; Round 6 tried a vertical rail of circles, which left the steps off-line from the section's heading). The code and JSON samples scroll sideways inside their own boxes, so the page never does.
 - **Below 1040 px** each step's picture goes under its text; **below 640 px** the numbers shrink and the gutter narrows, the bar drops the name, and the title shrinks so its first line stays whole.
 
 ### 12.3 Examples

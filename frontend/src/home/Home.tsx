@@ -206,15 +206,15 @@ function ExampleCard({ example }: { example: Example }) {
 }
 
 /**
- * One step of How it works: its number on the rail that joins the steps, its title and text, and
- * beside them (under them on narrow screens) a small picture of what that step looks like, taken
- * from the Reverse Linked List example the preview replays.
+ * One row of How it works: its number (01 to 04), its title and text, and beside them (under them
+ * on narrow screens) a small picture of what that step looks like, taken from the Reverse Linked
+ * List example the preview replays.
  */
 function HowStep({ n, title, visual, children }: { n: number; title: string; visual: ReactNode; children: ReactNode }) {
   return (
     <li className="how-step">
-      <span className="how-rail" aria-hidden="true">
-        <span className="how-n">{n}</span>
+      <span className="how-n" aria-hidden="true">
+        {String(n).padStart(2, "0")}
       </span>
       <div className="how-body">
         <h3 className="how-title">{title}</h3>
