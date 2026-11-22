@@ -108,7 +108,7 @@ Terminal 2:
 cd frontend && npm run dev
 ```
 
-Open http://localhost:5173. Choose C++, Python, or Java in the top bar (or pick a problem from the Examples menu beside it), paste a full Solution into the editor, paste the LeetCode example into the box under the fields, then Run code (or ⌘ Enter). For your own code without gVisor: `TRACE_SANDBOX=docker python3 -m backend`. Python cases to try are 71 to 84 and 94 in `docs/manual-test-suite.md`, Java cases 85 to 92.
+Open http://localhost:5173. Choose C++, Python, or Java in the top bar (or pick a problem from the Examples menu beside it), paste a full Solution into the editor, paste an example into the box under the fields, then Run code (or ⌘ Enter). For your own code without gVisor: `TRACE_SANDBOX=docker python3 -m backend`. Python cases to try are 71 to 84 and 94 in `docs/manual-test-suite.md`, Java cases 85 to 92.
 
 ## 5. Tear down
 

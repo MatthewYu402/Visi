@@ -39,7 +39,7 @@ Only *observe* is fundamentally different between languages. Snapshot and normal
 > **Key insight 2: serialize immediately, never keep live references.** If a step holds a reference to the live `numMap` and the program keeps mutating it, step 2 will silently change after the fact. Each step must be a deep copy of the state at that moment. This is what makes the trace self-contained.
 
 #### Scope filtering
-Record only frames in the **user's code** (the `Solution` method and helpers they wrote). Skip the driver, the standard library, and LeetCode helper code. Otherwise, traces will fill with irrelevant steps and burn the step budget.
+Record only frames in the **user's code** (the `Solution` method and helpers they wrote). Skip the driver, the standard library, and the helper types' code. Otherwise, traces will fill with irrelevant steps and burn the step budget.
 
 #### Identity
 Objects that need identity (`TreeNode`, `ListNode`, custom classes) get stable ids, assigned in first-seen order (`n1`, `n2`, ...) and reused for the whole run. Raw pointers or `id()` values are used internally for lookup but **never emitted** (`trace-format.md` [Section 8](./trace-format.md#8-rules-for-adapter-authors), rules 2 and 3). Insert the heap entry *before* recursing into its fields so cycles (a doubly linked list, a graph) terminate.
@@ -203,7 +203,7 @@ Planned approach: **Python via `sys.settrace`, C++ via Clang instrumentation**, 
 ## 8. Open questions
 These are gaps in `trace-format.md` that native tracers expose. They should be resolved in a minor version.
 1. **Aliasing of containers.** *Resolved in v0.14.* Only `object`s had ids, so two variables referring to the *same* container showed as two separate copies, which hid in-place mutation through aliases (Python's `[[0] * n] * m`, `res.append(path)`). A container reached from more than one place in a step now carries the same `id` at every place ([trace-format.md, Shared containers](trace-format.md#shared-containers)). A Python tracer finds them with `id()` in a first pass over the step; the C++ adapter does not write them yet ([`adapters/cpp.md`](adapters/cpp.md)).
-2. **Member variables.** *Resolved in v0.12.* LeetCode solutions often use fields on the `Solution` instance (memo tables, visited sets). A step now has a separate `members` field, written once beside the frames ([trace-format.md, Members](trace-format.md#members)). A Python tracer would read them from `self` in the method's frame.
+2. **Member variables.** *Resolved in v0.12.* Solutions often use fields on the `Solution` instance (memo tables, visited sets). A step now has a separate `members` field, written once beside the frames ([trace-format.md, Members](trace-format.md#members)). A Python tracer would read them from `self` in the method's frame.
 3. **Pointers that do not point at a live object.** A native tracer in a language with manual memory (C++) can be handed a dangling or uninitialized pointer, and the trace has no way to say "this points at nothing valid". Today that is a documented limit of the C++ adapter ([`adapters/cpp.md` §3.7](adapters/cpp.md#37-limits-of-address-identity)).
 
 Resolved in v0.2: tuples, which used to flatten to `list`, now have their own `tuple` kind.

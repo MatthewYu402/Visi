@@ -33,7 +33,7 @@ The **hint** is the field that says which one it is. Hints are inferred by the a
 |---|---|
 | The `hint` field on a problem parameter | In the spec and the schema |
 | The list of allowed hints | In the spec and the schema |
-| An adapter that writes hints | **The driver, for every language**: `driver/hints.py` writes `grid`, `adjacency-list`, `adjacency-matrix`, `edge-list`, or `intervals` on a 2D-array parameter when its name is one LeetCode uses for that structure **and** the example has that shape. No hint otherwise (§4.3). The golden fixtures have none, since none has such a parameter |
+| An adapter that writes hints | **The driver, for every language**: `driver/hints.py` writes `grid`, `adjacency-list`, `adjacency-matrix`, `edge-list`, or `intervals` on a 2D-array parameter when its name is one problems conventionally use for that structure **and** the example has that shape. No hint otherwise (§4.3). The golden fixtures have none, since none has such a parameter |
 | The frontend's fallback | Draws by kind alone when there is no hint, so an `array` of `array`s is a grid or rows |
 | A "view as" control to override a hint | **Done**: a card's View menu ([`frontend.md` §5.1](frontend.md#51-view-as)). Locals start on the drawing by kind and are switched there (option C below, for now) |
 | Hints for local variables | **Not possible in the format.** See §4.1 |
@@ -45,7 +45,7 @@ The spec lists four sources, from most to least certain. This table adds what ea
 | # | Source | Example | Needs |
 |---|---|---|---|
 | 1 | The signature's types | A `TreeNode*` parameter is a `tree` | The method signature (driver generation) |
-| 2 | LeetCode's parameter names | `grid`, `edges`, `intervals` | The method signature, plus a small table of names |
+| 2 | Conventional parameter names | `grid`, `edges`, `intervals` | The method signature, plus a small table of names |
 | 3 | How the code uses the value | `grid[r][c]` with two loop indices suggests `grid`. Elements used as indices into another array suggest a graph | The AST (the rewriter) |
 | 4 | The shape of the example value | Every inner array has exactly two numbers | Only the parsed example, so it can be shared by every language |
 

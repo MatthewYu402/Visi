@@ -5,10 +5,10 @@ Solutions to paste into the sandbox page, one per data structure or behaviour, e
 ## How to use it
 
 1. Choose the case's language in the top bar (cases 1 to 70 and 93 are C++, 71 to 84, 94, 96, and 98 Python, 85 to 92, 97, and 99 Java, and 95 is in all three), then copy the **Code** block into the editor (select all, then paste over the starter).
-2. Copy the whole **Example** block (both lines) into the **or paste a LeetCode example** box. Pasting fills the fields; the `Output:` line is ignored.
+2. Copy the whole **Example** block (both lines) into the **or paste an example** box. Pasting fills the fields; the `Output:` line is ignored.
 3. Press **Run code**, then step through. Write what you notice under **Notes**.
 
-Every case was run with its pasted example through the pipeline on 2026-11-17 (`main` at `d352b95` plus the light-theme change), and its fields were filled through `/api/signature` the way the page does. Each `Output:` line is what the run returned. The step counts are from those runs. The Python cases (71 to 84, 94, 96, 98) and the Java cases (85 to 92, 97, 99) were run the same way on 2026-11-19, with the Python adapter on Python 3.12 and the Java adapter on JDK 21, and case 93 with the C++ pipeline; case 95 was run in all three. Rebuild the sandbox images first (`docker build -f sandbox/cpp.Dockerfile -t visi-sandbox-cpp .` and `docker build -f sandbox/python.Dockerfile -t visi-sandbox-python .` and `docker build -f sandbox/java.Dockerfile -t visi-sandbox-java .`; before the Python adapter it was `sandbox/Dockerfile`, tagged `visi-sandbox`), since an image built before the v0.11 commit writes an older trace version, which the page rejects.
+Every case's example was written for this suite, and on 2026-11-22 every case was run with it through the pipeline in its own language (C++ with the rewriter and Clang 18, Python 3.12, JDK 21): each `Output:` line is what the run returned, and the step and call counts are from those runs. Cases 56 and 62 keep their small inputs (`n = 2`, `nums = []`), and case 95's input is generated. Rebuild the sandbox images first (`docker build -f sandbox/cpp.Dockerfile -t visi-sandbox-cpp .` and `docker build -f sandbox/python.Dockerfile -t visi-sandbox-python .` and `docker build -f sandbox/java.Dockerfile -t visi-sandbox-java .`; before the Python adapter it was `sandbox/Dockerfile`, tagged `visi-sandbox`), since an image built before the v0.11 commit writes an older trace version, which the page rejects.
 
 ## Found while writing this
 
@@ -26,99 +26,99 @@ Every case was run with its pasted example through the pipeline on 2026-11-17 (`
 | # | Case | What it exercises | Steps | Ends |
 |---|---|---|---|---|
 | 1 | [Two Sum (hash map, iterator)](#1-two-sum-hash-map-iterator) | array, map, iterator | 22 | returns |
-| 2 | [Container With Most Water (two pointers)](#2-container-with-most-water-two-pointers) | array | 45 | returns |
-| 3 | [Binary Search (lo, hi, mid)](#3-binary-search-lo-hi-mid) | array | 16 | returns |
+| 2 | [Container With Most Water (two pointers)](#2-container-with-most-water-two-pointers) | array | 35 | returns |
+| 3 | [Binary Search (lo, hi, mid)](#3-binary-search-lo-hi-mid) | array | 11 | returns |
 | 4 | [Move Zeroes (void, in place)](#4-move-zeroes-void-in-place) | array | 19 | returns |
 | 5 | [Sort Colors (Dutch flag, three pointers)](#5-sort-colors-dutch-flag-three-pointers) | array | 31 | returns |
-| 6 | [Merge Sorted Array (two arrays, three indexes)](#6-merge-sorted-array-two-arrays-three-indexes) | array | 23 | returns |
+| 6 | [Merge Sorted Array (two arrays, three indexes)](#6-merge-sorted-array-two-arrays-three-indexes) | array | 33 | returns |
 | 7 | [Product of Array Except Self (prefix and suffix)](#7-product-of-array-except-self-prefix-and-suffix) | array | 25 | returns |
 | 8 | [Best Time to Buy and Sell Stock (scalars only)](#8-best-time-to-buy-and-sell-stock-scalars-only) | array | 22 | returns |
 | 9 | [Spiral Matrix (2D array, four bounds)](#9-spiral-matrix-2d-array-four-bounds) | array | 42 | returns |
 | 10 | [Rotate Image (void, 2D in place)](#10-rotate-image-void-2d-in-place) | array | 22 | returns |
-| 11 | [Valid Palindrome (two pointers on a string)](#11-valid-palindrome-two-pointers-on-a-string) | scalars | 34 | returns |
-| 12 | [Longest Substring Without Repeating Characters (sliding window)](#12-longest-substring-without-repeating-characters-sliding-window) | map | 50 | returns |
-| 13 | [Valid Anagram (count array of 26)](#13-valid-anagram-count-array-of-26) | array | 78 | returns |
+| 11 | [Valid Palindrome (two pointers on a string)](#11-valid-palindrome-two-pointers-on-a-string) | scalars | 46 | returns |
+| 12 | [Longest Substring Without Repeating Characters (sliding window)](#12-longest-substring-without-repeating-characters-sliding-window) | map | 42 | returns |
+| 13 | [Valid Anagram (count array of 26)](#13-valid-anagram-count-array-of-26) | array | 75 | returns |
 | 14 | [Group Anagrams (map of string to array)](#14-group-anagrams-map-of-string-to-array) | array, map | 34 | returns |
-| 15 | [Fizz Buzz (prints to cout)](#15-fizz-buzz-prints-to-cout) | array | 44 | returns |
-| 16 | [Contains Duplicate (hash set)](#16-contains-duplicate-hash-set) | array, set | 17 | returns |
+| 15 | [Fizz Buzz (prints to cout)](#15-fizz-buzz-prints-to-cout) | array | 60 | returns |
+| 16 | [Contains Duplicate (hash set)](#16-contains-duplicate-hash-set) | array, set | 14 | returns |
 | 17 | [Longest Consecutive Sequence (set, inner while)](#17-longest-consecutive-sequence-set-inner-while) | array, set | 37 | returns |
-| 18 | [Car Pooling (ordered map, range-for over pairs)](#18-car-pooling-ordered-map-range-for-over-pairs) | array, map | 22 | returns |
-| 19 | [Contains Duplicate III (ordered set, lower_bound iterator)](#19-contains-duplicate-iii-ordered-set-lower_bound-iterator) | array, set, iterator | 38 | returns |
-| 20 | [Sort Characters By Frequency (multimap)](#20-sort-characters-by-frequency-multimap) | map, multimap | 25 | returns |
+| 18 | [Car Pooling (ordered map, range-for over pairs)](#18-car-pooling-ordered-map-range-for-over-pairs) | array, map | 31 | returns |
+| 19 | [Contains Duplicate III (ordered set, lower_bound iterator)](#19-contains-duplicate-iii-ordered-set-lower_bound-iterator) | array, set, iterator | 32 | returns |
+| 20 | [Sort Characters By Frequency (multimap)](#20-sort-characters-by-frequency-multimap) | map, multimap | 27 | returns |
 | 21 | [Top K Frequent Elements (map and min-heap of pairs)](#21-top-k-frequent-elements-map-and-min-heap-of-pairs) | array, map, heap, pair | 34 | returns |
-| 22 | [Kth Largest Element (min-heap of ints)](#22-kth-largest-element-min-heap-of-ints) | array, heap | 25 | returns |
-| 23 | [Last Stone Weight (max-heap)](#23-last-stone-weight-max-heap) | array, heap | 31 | returns |
-| 24 | [Valid Parentheses (stack of chars)](#24-valid-parentheses-stack-of-chars) | stack | 30 | returns |
-| 25 | [Daily Temperatures (monotonic stack of indexes)](#25-daily-temperatures-monotonic-stack-of-indexes) | array, stack | 54 | returns |
-| 26 | [Evaluate Reverse Polish Notation (stack, array of strings)](#26-evaluate-reverse-polish-notation-stack-array-of-strings) | array, stack | 36 | returns |
-| 27 | [Sliding Window Maximum (deque)](#27-sliding-window-maximum-deque) | array, deque | 64 | returns |
+| 22 | [Kth Largest Element (min-heap of ints)](#22-kth-largest-element-min-heap-of-ints) | array, heap | 24 | returns |
+| 23 | [Last Stone Weight (max-heap)](#23-last-stone-weight-max-heap) | array, heap | 32 | returns |
+| 24 | [Valid Parentheses (stack of chars)](#24-valid-parentheses-stack-of-chars) | stack | 39 | returns |
+| 25 | [Daily Temperatures (monotonic stack of indexes)](#25-daily-temperatures-monotonic-stack-of-indexes) | array, stack | 47 | returns |
+| 26 | [Evaluate Reverse Polish Notation (stack, array of strings)](#26-evaluate-reverse-polish-notation-stack-array-of-strings) | array, stack | 37 | returns |
+| 27 | [Sliding Window Maximum (deque)](#27-sliding-window-maximum-deque) | array, deque | 60 | returns |
 | 28 | [Rotting Oranges (queue of pairs, grid BFS)](#28-rotting-oranges-queue-of-pairs-grid-bfs) | array, queue, pair | 179 | returns |
-| 29 | [Find the Winner of the Circular Game (std::list and an iterator)](#29-find-the-winner-of-the-circular-game-stdlist-and-an-iterator) | std::list, iterator | 46 | returns |
+| 29 | [Find the Winner of the Circular Game (std::list and an iterator)](#29-find-the-winner-of-the-circular-game-stdlist-and-an-iterator) | std::list, iterator | 72 | returns |
 | 30 | [Reverse Linked List (three pointers)](#30-reverse-linked-list-three-pointers) | linked list | 30 | returns |
 | 31 | [Merge Two Sorted Lists (dummy node by value)](#31-merge-two-sorted-lists-dummy-node-by-value) | linked list | 31 | returns |
-| 32 | [Linked List Cycle (pos, slow and fast)](#32-linked-list-cycle-pos-slow-and-fast) | linked list | 16 | returns |
-| 33 | [Remove Nth Node From End (node unlinked)](#33-remove-nth-node-from-end-node-unlinked) | linked list | 23 | returns |
+| 32 | [Linked List Cycle (pos, slow and fast)](#32-linked-list-cycle-pos-slow-and-fast) | linked list | 12 | returns |
+| 33 | [Remove Nth Node From End (node unlinked)](#33-remove-nth-node-from-end-node-unlinked) | linked list | 22 | returns |
 | 34 | [Add Two Numbers (building a new list)](#34-add-two-numbers-building-a-new-list) | linked list | 39 | returns |
 | 35 | [Middle of the Linked List (empty-ish edge: one node)](#35-middle-of-the-linked-list-empty-ish-edge-one-node) | linked list | 5 | returns |
 | 36 | [Invert Binary Tree (recursion returning nodes)](#36-invert-binary-tree-recursion-returning-nodes) | tree, recursion (15 calls) | 73 | returns |
 | 37 | [Binary Tree Level Order Traversal (queue of nodes)](#37-binary-tree-level-order-traversal-queue-of-nodes) | array, queue, tree | 56 | returns |
-| 38 | [Validate Binary Search Tree (bounds as long long)](#38-validate-binary-search-tree-bounds-as-long-long) | big int, tree, recursion (6 calls) | 20 | returns |
-| 39 | [Kth Smallest Element in a BST (iterative, stack of nodes)](#39-kth-smallest-element-in-a-bst-iterative-stack-of-nodes) | stack, tree | 36 | returns |
-| 40 | [Diameter of Binary Tree (helper with an int& out-parameter)](#40-diameter-of-binary-tree-helper-with-an-int-out-parameter) | tree, recursion (12 calls) | 52 | returns |
-| 41 | [Path Sum II (void backtracking on a tree)](#41-path-sum-ii-void-backtracking-on-a-tree) | array, tree, recursion (22 calls) | 120 | returns |
+| 38 | [Validate Binary Search Tree (bounds as long long)](#38-validate-binary-search-tree-bounds-as-long-long) | big int, tree, recursion (7 calls) | 24 | returns |
+| 39 | [Kth Smallest Element in a BST (iterative, stack of nodes)](#39-kth-smallest-element-in-a-bst-iterative-stack-of-nodes) | stack, tree | 29 | returns |
+| 40 | [Diameter of Binary Tree (helper with an int& out-parameter)](#40-diameter-of-binary-tree-helper-with-an-int-out-parameter) | tree, recursion (14 calls) | 61 | returns |
+| 41 | [Path Sum II (void backtracking on a tree)](#41-path-sum-ii-void-backtracking-on-a-tree) | array, tree, recursion (16 calls) | 87 | returns |
 | 42 | [Average of Levels (doubles)](#42-average-of-levels-doubles) | array, queue, tree, doubles | 55 | returns |
 | 43 | [Clone Graph (graph nodes, BFS, map of node to node)](#43-clone-graph-graph-nodes-bfs-map-of-node-to-node) | map, queue, graph | 50 | returns |
-| 44 | [Number of Islands (void DFS on a char grid)](#44-number-of-islands-void-dfs-on-a-char-grid) | array, recursion (19 calls) | 102 | returns |
-| 45 | [Course Schedule (adjacency list local, Kahn's BFS)](#45-course-schedule-adjacency-list-local-kahns-bfs) | array, queue | 56 | returns |
-| 46 | [Network Delay Time (Dijkstra, heap of pairs)](#46-network-delay-time-dijkstra-heap-of-pairs) | array, heap, pair | 56 | returns |
-| 47 | [Redundant Connection (union-find with path compression)](#47-redundant-connection-union-find-with-path-compression) | array, recursion (9 calls) | 52 | returns |
-| 48 | [Fibonacci Number (plain recursion)](#48-fibonacci-number-plain-recursion) | recursion (15 calls) | 45 | returns |
-| 49 | [Fibonacci, large (recursion tree folding)](#49-fibonacci-large-recursion-tree-folding) | recursion (109 calls) | 327 | returns |
-| 50 | [Climbing Stairs (memoized recursion, map by reference)](#50-climbing-stairs-memoized-recursion-map-by-reference) | map, recursion (10 calls) | 40 | returns |
-| 51 | [Coin Change (1D DP table)](#51-coin-change-1d-dp-table) | array | 110 | returns |
-| 52 | [Unique Paths (2D DP table)](#52-unique-paths-2d-dp-table) | array | 20 | returns |
-| 53 | [Longest Common Subsequence (2D DP over two strings)](#53-longest-common-subsequence-2d-dp-over-two-strings) | array | 60 | returns |
+| 44 | [Number of Islands (void DFS on a char grid)](#44-number-of-islands-void-dfs-on-a-char-grid) | array, recursion (24 calls) | 123 | returns |
+| 45 | [Course Schedule (adjacency list local, Kahn's BFS)](#45-course-schedule-adjacency-list-local-kahns-bfs) | array, queue | 68 | returns |
+| 46 | [Network Delay Time (Dijkstra, heap of pairs)](#46-network-delay-time-dijkstra-heap-of-pairs) | array, heap, pair | 67 | returns |
+| 47 | [Redundant Connection (union-find with path compression)](#47-redundant-connection-union-find-with-path-compression) | array, recursion (11 calls) | 65 | returns |
+| 48 | [Fibonacci Number (plain recursion)](#48-fibonacci-number-plain-recursion) | recursion (25 calls) | 75 | returns |
+| 49 | [Fibonacci, large (recursion tree folding)](#49-fibonacci-large-recursion-tree-folding) | recursion (177 calls) | 531 | returns |
+| 50 | [Climbing Stairs (memoized recursion, map by reference)](#50-climbing-stairs-memoized-recursion-map-by-reference) | map, recursion (12 calls) | 49 | returns |
+| 51 | [Coin Change (1D DP table)](#51-coin-change-1d-dp-table) | array | 96 | returns |
+| 52 | [Unique Paths (2D DP table)](#52-unique-paths-2d-dp-table) | array | 24 | returns |
+| 53 | [Longest Common Subsequence (2D DP over two strings)](#53-longest-common-subsequence-2d-dp-over-two-strings) | array | 120 | returns |
 | 54 | [Subsets (backtracking, void)](#54-subsets-backtracking-void) | array, recursion (9 calls) | 57 | returns |
 | 55 | [Permutations (backtracking with a used array of bools)](#55-permutations-backtracking-with-a-used-array-of-bools) | array, recursion (17 calls) | 210 | returns |
 | 56 | [Generate Parentheses (string built by recursion)](#56-generate-parentheses-string-built-by-recursion) | array, recursion (9 calls) | 43 | returns |
 | 57 | [Pow(x, n) (recursion with doubles)](#57-powx-n-recursion-with-doubles) | doubles, recursion (4 calls) | 17 | returns |
 | 58 | [Single Number (XOR)](#58-single-number-xor) | array | 13 | returns |
-| 59 | [Number of 1 Bits (unsigned, shifts)](#59-number-of-1-bits-unsigned-shifts) | scalars | 16 | returns |
-| 60 | [Sqrt(x) (binary search with long long)](#60-sqrtx-binary-search-with-long-long) | scalars | 136 | returns |
-| 61 | [Reverse Integer (overflow check)](#61-reverse-integer-overflow-check) | scalars | 22 | returns |
+| 59 | [Number of 1 Bits (unsigned, shifts)](#59-number-of-1-bits-unsigned-shifts) | scalars | 19 | returns |
+| 60 | [Sqrt(x) (binary search with long long)](#60-sqrtx-binary-search-with-long-long) | scalars | 138 | returns |
+| 61 | [Reverse Integer (overflow check)](#61-reverse-integer-overflow-check) | scalars | 28 | returns |
 | 62 | [Empty input](#62-empty-input) | array | 3 | returns |
 | 63 | [Infinite loop (reaches the step cap)](#63-infinite-loop-reaches-the-step-cap) | scalars | 2000 | step cap |
 | 64 | [Crash (null pointer)](#64-crash-null-pointer) | — | — | crashes |
 | 65 | [Compile error](#65-compile-error) | — | — | compile error |
 | 66 | [Example names that do not match](#66-example-names-that-do-not-match) | — | — | input error |
 | 67 | [Long single line (statement cut with an ellipsis)](#67-long-single-line-statement-cut-with-an-ellipsis) | array | 12 | returns |
-| 68 | [Climbing Stairs (memo as a member)](#68-climbing-stairs-memo-as-a-member) | map (member), recursion | 28 | returns |
-| 69 | [Merge Intervals (intervals hint)](#69-merge-intervals-intervals-hint) | array (intervals view) | 17 | returns |
-| 70 | [Number of Provinces (adjacency matrix hint)](#70-number-of-provinces-adjacency-matrix-hint) | array (graph view), recursion | 44 | returns |
+| 68 | [Climbing Stairs (memo as a member)](#68-climbing-stairs-memo-as-a-member) | map (member), recursion | 37 | returns |
+| 69 | [Merge Intervals (intervals hint)](#69-merge-intervals-intervals-hint) | array (intervals view) | 20 | returns |
+| 70 | [Number of Provinces (adjacency matrix hint)](#70-number-of-provinces-adjacency-matrix-hint) | array (graph view), recursion | 65 | returns |
 | 71 | [Two Sum (dict, in)](#71-two-sum-dict-in) | array, map | 18 | returns |
-| 72 | [Valid Parentheses (list as a stack)](#72-valid-parentheses-list-as-a-stack) | array, map | 26 | returns |
-| 73 | [Kth Largest Element (heapq min-heap)](#73-kth-largest-element-heapq-min-heap) | priority queue (min) | 26 | returns |
+| 72 | [Valid Parentheses (list as a stack)](#72-valid-parentheses-list-as-a-stack) | array, map | 33 | returns |
+| 73 | [Kth Largest Element (heapq min-heap)](#73-kth-largest-element-heapq-min-heap) | priority queue (min) | 25 | returns |
 | 74 | [Top K Frequent Elements (Counter, heap of tuples)](#74-top-k-frequent-elements-counter-heap-of-tuples) | map, priority queue of tuples | 15 | returns |
-| 75 | [Number of Islands (deque BFS on a grid)](#75-number-of-islands-deque-bfs-on-a-grid) | array (grid), deque | 101 | returns |
-| 76 | [Contains Duplicate III (SortedList)](#76-contains-duplicate-iii-sortedlist) | multiset (SortedList) | 38 | returns |
+| 75 | [Number of Islands (deque BFS on a grid)](#75-number-of-islands-deque-bfs-on-a-grid) | array (grid), deque | 120 | returns |
+| 76 | [Contains Duplicate III (SortedList)](#76-contains-duplicate-iii-sortedlist) | multiset (SortedList) | 32 | returns |
 | 77 | [Reverse Linked List (Optional[ListNode])](#77-reverse-linked-list-optionallistnode) | linked list | 29 | returns |
-| 78 | [Maximum Depth of Binary Tree (recursion)](#78-maximum-depth-of-binary-tree-recursion) | tree, recursion | 43 | returns |
+| 78 | [Maximum Depth of Binary Tree (recursion)](#78-maximum-depth-of-binary-tree-recursion) | tree, recursion | 51 | returns |
 | 79 | [Clone Graph (Node in a docstring)](#79-clone-graph-node-in-a-docstring) | graph, map | 48 | returns |
-| 80 | [Climbing Stairs (memo as a member)](#80-climbing-stairs-memo-as-a-member) | map (member), recursion | 31 | returns |
+| 80 | [Climbing Stairs (memo as a member)](#80-climbing-stairs-memo-as-a-member) | map (member), recursion | 40 | returns |
 | 81 | [Subsets (backtracking, path[:])](#81-subsets-backtracking-path) | array, recursion | 58 | returns |
-| 82 | [Fibonacci with @cache (memo not shown)](#82-fibonacci-with-cache-memo-not-shown) | scalars, recursion | 27 | returns |
+| 82 | [Fibonacci with @cache (memo not shown)](#82-fibonacci-with-cache-memo-not-shown) | scalars, recursion | 30 | returns |
 | 83 | [Exception (index out of range)](#83-exception-index-out-of-range) | — | — | raises |
 | 84 | [Infinite loop (reaches the step cap)](#84-infinite-loop-reaches-the-step-cap) | scalars | 2000 | step cap |
 | 85 | [Two Sum (HashMap, containsKey)](#85-two-sum-hashmap-containskey) | array, map | 18 | returns |
-| 86 | [Container With Most Water (two pointers)](#86-container-with-most-water-two-pointers) | array | 46 | returns |
-| 87 | [Valid Parentheses (Deque used as a stack)](#87-valid-parentheses-deque-used-as-a-stack) | stack | 27 | returns |
+| 86 | [Container With Most Water (two pointers)](#86-container-with-most-water-two-pointers) | array | 36 | returns |
+| 87 | [Valid Parentheses (Deque used as a stack)](#87-valid-parentheses-deque-used-as-a-stack) | stack | 35 | returns |
 | 88 | [Reverse Linked List (three pointers)](#88-reverse-linked-list-three-pointers) | linked list | 30 | returns |
-| 89 | [Maximum Depth of Binary Tree (recursion)](#89-maximum-depth-of-binary-tree-recursion) | tree, recursion | 43 | returns |
-| 90 | [Number of Islands (void DFS on a char grid)](#90-number-of-islands-void-dfs-on-a-char-grid) | array (grid), recursion | 102 | returns |
+| 89 | [Maximum Depth of Binary Tree (recursion)](#89-maximum-depth-of-binary-tree-recursion) | tree, recursion | 51 | returns |
+| 90 | [Number of Islands (void DFS on a char grid)](#90-number-of-islands-void-dfs-on-a-char-grid) | array (grid), recursion | 123 | returns |
 | 91 | [Subsets (backtracking, void)](#91-subsets-backtracking-void) | array, recursion | 57 | returns |
-| 92 | [Climbing Stairs (memo as a member)](#92-climbing-stairs-memo-as-a-member) | map (member), recursion | 28 | returns |
-| 93 | [Maximum Depth of Binary Tree (recursion)](#93-maximum-depth-of-binary-tree-recursion) | tree, recursion | 43 | returns |
-| 94 | [Container With Most Water (two pointers)](#94-container-with-most-water-two-pointers) | array | 45 | returns |
+| 92 | [Climbing Stairs (memo as a member)](#92-climbing-stairs-memo-as-a-member) | map (member), recursion | 37 | returns |
+| 93 | [Maximum Depth of Binary Tree (recursion)](#93-maximum-depth-of-binary-tree-recursion) | tree, recursion | 51 | returns |
+| 94 | [Container With Most Water (two pointers)](#94-container-with-most-water-two-pointers) | array | 35 | returns |
 
 ---
 
@@ -153,7 +153,7 @@ public:
 **Example**
 
 ```text
-Input: nums = [3,2,4,6], target = 10
+Input: nums = [4,9,1,6], target = 7
 Output: [2,3]
 ```
 
@@ -164,7 +164,7 @@ Output: [2,3]
 
 ## 2 Container With Most Water (two pointers)
 
-**Exercises:** array · **Steps:** 45 · **Ends:** returns
+**Exercises:** array · **Steps:** 35 · **Ends:** returns
 
 **Watch for:** `left` and `right` markers walk toward each other under `height`; `best` changes in amber.
 
@@ -193,8 +193,8 @@ public:
 **Example**
 
 ```text
-Input: height = [1,8,6,2,5,4,8,3,7]
-Output: 49
+Input: height = [2,7,4,1,8,3,6]
+Output: 30
 ```
 
 **Notes**
@@ -204,7 +204,7 @@ Output: 49
 
 ## 3 Binary Search (lo, hi, mid)
 
-**Exercises:** array · **Steps:** 16 · **Ends:** returns
+**Exercises:** array · **Steps:** 11 · **Ends:** returns
 
 **Watch for:** Three markers `lo`, `mid`, `hi` under `nums`; the condition chips true/false on each loop check.
 
@@ -233,8 +233,8 @@ public:
 **Example**
 
 ```text
-Input: nums = [-1,0,3,5,9,12,17,21], target = 17
-Output: 6
+Input: nums = [-4,-1,2,6,8,11,15,20], target = 11
+Output: 5
 ```
 
 **Notes**
@@ -268,7 +268,7 @@ public:
 **Example**
 
 ```text
-Input: nums = [0,1,0,3,12]
+Input: nums = [4,0,0,7,1]
 Output: null
 ```
 
@@ -309,7 +309,7 @@ public:
 **Example**
 
 ```text
-Input: nums = [2,0,2,1,1,0]
+Input: nums = [1,2,0,0,2,1]
 Output: null
 ```
 
@@ -320,7 +320,7 @@ Output: null
 
 ## 6 Merge Sorted Array (two arrays, three indexes)
 
-**Exercises:** array · **Steps:** 23 · **Ends:** returns
+**Exercises:** array · **Steps:** 33 · **Ends:** returns
 
 **Watch for:** `i` and `k` under `nums1`, `j` under `nums2` (v0.9 `indexes`): each marker only under the array it indexes.
 
@@ -348,7 +348,7 @@ public:
 **Example**
 
 ```text
-Input: nums1 = [1,2,3,0,0,0], m = 3, nums2 = [2,5,6], n = 3
+Input: nums1 = [2,4,7,0,0,0], m = 3, nums2 = [1,5,8], n = 3
 Output: null
 ```
 
@@ -387,8 +387,8 @@ public:
 **Example**
 
 ```text
-Input: nums = [1,2,3,4]
-Output: [24,12,8,6]
+Input: nums = [2,3,4,5]
+Output: [60,40,30,24]
 ```
 
 **Notes**
@@ -400,7 +400,7 @@ Output: [24,12,8,6]
 
 **Exercises:** array · **Steps:** 22 · **Ends:** returns
 
-**Watch for:** Only `prices` gets a card; `minPrice` and `best` live in the state panel. Store chips `best = 5`.
+**Watch for:** Only `prices` gets a card; `minPrice` and `best` live in the state panel. Store chips `best = 6`.
 
 **Code**
 
@@ -422,8 +422,8 @@ public:
 **Example**
 
 ```text
-Input: prices = [7,1,5,3,6,4]
-Output: 5
+Input: prices = [9,4,6,2,8,5]
+Output: 6
 ```
 
 **Notes**
@@ -468,8 +468,8 @@ public:
 **Example**
 
 ```text
-Input: matrix = [[1,2,3],[4,5,6],[7,8,9]]
-Output: [1,2,3,6,9,8,7,4,5]
+Input: matrix = [[2,4,6],[8,10,12],[14,16,18]]
+Output: [2,4,6,12,18,16,14,8,10]
 ```
 
 **Notes**
@@ -505,7 +505,7 @@ public:
 **Example**
 
 ```text
-Input: matrix = [[1,2,3],[4,5,6],[7,8,9]]
+Input: matrix = [[10,20,30],[40,50,60],[70,80,90]]
 Output: null
 ```
 
@@ -520,9 +520,9 @@ Output: null
 
 ## 11 Valid Palindrome (two pointers on a string)
 
-**Exercises:** scalars · **Steps:** 34 · **Ends:** returns
+**Exercises:** scalars · **Steps:** 46 · **Ends:** returns
 
-**Watch for:** The string card: `left` and `right` walking in from both ends, and the two characters each comparison reads outlined (v0.11). Try `s = "A man, a plan, a canal: Panama"` on a narrow window: the strip scrolls to follow the pointers.
+**Watch for:** The string card: `left` and `right` walking in from both ends, and the two characters each comparison reads outlined (v0.11). Try `s = "Was it a car or a cat I saw?"` on a narrow window: the strip scrolls to follow the pointers.
 
 **Code**
 
@@ -548,7 +548,7 @@ public:
 **Example**
 
 ```text
-Input: s = "Race, car!"
+Input: s = "Step on no pets!"
 Output: true
 ```
 
@@ -559,7 +559,7 @@ Output: true
 
 ## 12 Longest Substring Without Repeating Characters (sliding window)
 
-**Exercises:** map · **Steps:** 50 · **Ends:** returns
+**Exercises:** map · **Steps:** 42 · **Ends:** returns
 
 **Watch for:** `unordered_map<char, int>`: char keys in the map card; `left` and `right` against the string.
 
@@ -587,8 +587,8 @@ public:
 **Example**
 
 ```text
-Input: s = "abcabcbb"
-Output: 3
+Input: s = "dvdfabd"
+Output: 5
 ```
 
 **Notes**
@@ -598,7 +598,7 @@ Output: 3
 
 ## 13 Valid Anagram (count array of 26)
 
-**Exercises:** array · **Steps:** 78 · **Ends:** returns
+**Exercises:** array · **Steps:** 75 · **Ends:** returns
 
 **Watch for:** A wide 26-cell array. Since v0.12 `count[s[i] - 'a']` no longer pairs `i` with `count`, so no marker shows under `count`.
 
@@ -625,7 +625,7 @@ public:
 **Example**
 
 ```text
-Input: s = "anagram", t = "nagaram"
+Input: s = "listen", t = "silent"
 Output: true
 ```
 
@@ -664,7 +664,7 @@ public:
 **Example**
 
 ```text
-Input: strs = ["eat","tea","tan","ate","nat","bat"]
+Input: strs = ["pots","stop","opt","top","cat","act"]
 Output: any grouping
 ```
 
@@ -675,7 +675,7 @@ Output: any grouping
 
 ## 15 Fizz Buzz (prints to cout)
 
-**Exercises:** array · **Steps:** 44 · **Ends:** returns
+**Exercises:** array · **Steps:** 60 · **Ends:** returns
 
 **Watch for:** The Output tab appears beside Locals; it holds the whole run's prints. `answer` is an array of strings.
 
@@ -702,8 +702,8 @@ public:
 **Example**
 
 ```text
-Input: n = 5
-Output: ["1","2","Fizz","4","Buzz"]
+Input: n = 7
+Output: ["1","2","Fizz","4","Buzz","Fizz","7"]
 ```
 
 **Notes**
@@ -717,7 +717,7 @@ Output: ["1","2","Fizz","4","Buzz"]
 
 ## 16 Contains Duplicate (hash set)
 
-**Exercises:** array, set · **Steps:** 17 · **Ends:** returns
+**Exercises:** array, set · **Steps:** 14 · **Ends:** returns
 
 **Watch for:** Set card with curly braces; members fade in; the run stops at the duplicate.
 
@@ -742,7 +742,7 @@ public:
 **Example**
 
 ```text
-Input: nums = [1,2,3,4,2]
+Input: nums = [7,3,9,3]
 Output: true
 ```
 
@@ -784,7 +784,7 @@ public:
 **Example**
 
 ```text
-Input: nums = [100,4,200,1,3,2]
+Input: nums = [50,7,5,30,6,8]
 Output: 4
 ```
 
@@ -795,7 +795,7 @@ Output: 4
 
 ## 18 Car Pooling (ordered map, range-for over pairs)
 
-**Exercises:** array, map · **Steps:** 22 · **Ends:** returns
+**Exercises:** array, map · **Steps:** 31 · **Ends:** returns
 
 **Watch for:** `map<int, int>` (ordered): the trace's order is shown as is. The structured binding `[place, delta]` shows as two plain locals.
 
@@ -825,7 +825,7 @@ public:
 **Example**
 
 ```text
-Input: trips = [[2,1,5],[3,3,7]], capacity = 5
+Input: trips = [[3,2,6],[2,4,8],[1,7,9]], capacity = 5
 Output: true
 ```
 
@@ -836,7 +836,7 @@ Output: true
 
 ## 19 Contains Duplicate III (ordered set, lower_bound iterator)
 
-**Exercises:** array, set, iterator · **Steps:** 38 · **Ends:** returns
+**Exercises:** array, set, iterator · **Steps:** 32 · **Ends:** returns
 
 **Watch for:** An iterator into a `set` (`it`), drawn as a position on the set's member; a sliding window that erases.
 
@@ -865,7 +865,7 @@ public:
 **Example**
 
 ```text
-Input: nums = [1,5,9,1,5,9], indexDiff = 2, valueDiff = 3
+Input: nums = [8,3,12,6,2], indexDiff = 2, valueDiff = 1
 Output: false
 ```
 
@@ -876,7 +876,7 @@ Output: false
 
 ## 20 Sort Characters By Frequency (multimap)
 
-**Exercises:** map, multimap · **Steps:** 25 · **Ends:** returns
+**Exercises:** map, multimap · **Steps:** 27 · **Ends:** returns
 
 **Watch for:** `multimap<int, char, greater<int>>`: one row per key, values side by side, matched by count.
 
@@ -904,7 +904,7 @@ public:
 **Example**
 
 ```text
-Input: s = "tree"
+Input: s = "level"
 Output: any order of equal counts
 ```
 
@@ -947,8 +947,8 @@ public:
 **Example**
 
 ```text
-Input: nums = [1,1,1,2,2,3], k = 2
-Output: [2,1]
+Input: nums = [5,5,7,7,7,9], k = 2
+Output: [5,7]
 ```
 
 **Notes**
@@ -958,9 +958,9 @@ Output: [2,1]
 
 ## 22 Kth Largest Element (min-heap of ints)
 
-**Exercises:** array, heap · **Steps:** 25 · **Ends:** returns
+**Exercises:** array, heap · **Steps:** 24 · **Ends:** returns
 
-**Watch for:** Heap card: tree plus storage row; `push 4`, `pop 1` chips.
+**Watch for:** Heap card: tree plus storage row; `push 9`, `pop 1` chips.
 
 **Code**
 
@@ -983,8 +983,8 @@ public:
 **Example**
 
 ```text
-Input: nums = [3,2,1,5,6,4], k = 2
-Output: 5
+Input: nums = [7,4,9,1,6,3], k = 3
+Output: 6
 ```
 
 **Notes**
@@ -994,7 +994,7 @@ Output: 5
 
 ## 23 Last Stone Weight (max-heap)
 
-**Exercises:** array, heap · **Steps:** 31 · **Ends:** returns
+**Exercises:** array, heap · **Steps:** 32 · **Ends:** returns
 
 **Watch for:** Max-heap: the default `priority_queue<int>`; two pops then maybe a push each round.
 
@@ -1022,7 +1022,7 @@ public:
 **Example**
 
 ```text
-Input: stones = [2,7,4,1,8,1]
+Input: stones = [3,9,5,2,6]
 Output: 1
 ```
 
@@ -1037,7 +1037,7 @@ Output: 1
 
 ## 24 Valid Parentheses (stack of chars)
 
-**Exercises:** stack · **Steps:** 30 · **Ends:** returns
+**Exercises:** stack · **Steps:** 39 · **Ends:** returns
 
 **Watch for:** Vertical stack with an open top; `push '('` and `pop` chips.
 
@@ -1068,7 +1068,7 @@ public:
 **Example**
 
 ```text
-Input: s = "([]{})"
+Input: s = "{[()()]}"
 Output: true
 ```
 
@@ -1079,7 +1079,7 @@ Output: true
 
 ## 25 Daily Temperatures (monotonic stack of indexes)
 
-**Exercises:** array, stack · **Steps:** 54 · **Ends:** returns
+**Exercises:** array, stack · **Steps:** 47 · **Ends:** returns
 
 **Watch for:** A stack holding indexes into `temperatures`; `answer` filled out of order.
 
@@ -1108,8 +1108,8 @@ public:
 **Example**
 
 ```text
-Input: temperatures = [73,74,75,71,69,72,76,73]
-Output: [1,1,4,2,1,1,0,0]
+Input: temperatures = [60,62,58,57,61,65,63]
+Output: [1,4,2,1,1,0,0]
 ```
 
 **Notes**
@@ -1119,7 +1119,7 @@ Output: [1,1,4,2,1,1,0,0]
 
 ## 26 Evaluate Reverse Polish Notation (stack, array of strings)
 
-**Exercises:** array, stack · **Steps:** 36 · **Ends:** returns
+**Exercises:** array, stack · **Steps:** 37 · **Ends:** returns
 
 **Watch for:** Stack of ints growing and shrinking; tokens as an array of strings with `i`.
 
@@ -1153,8 +1153,8 @@ public:
 **Example**
 
 ```text
-Input: tokens = ["2","1","+","3","*"]
-Output: 9
+Input: tokens = ["4","3","-","5","*"]
+Output: 5
 ```
 
 **Notes**
@@ -1164,7 +1164,7 @@ Output: 9
 
 ## 27 Sliding Window Maximum (deque)
 
-**Exercises:** array, deque · **Steps:** 64 · **Ends:** returns
+**Exercises:** array, deque · **Steps:** 60 · **Ends:** returns
 
 **Watch for:** Deque tube with front and back; `pop back` and `pop front` chips.
 
@@ -1196,8 +1196,8 @@ public:
 **Example**
 
 ```text
-Input: nums = [1,3,-1,-3,5,3,6,7], k = 3
-Output: [3,3,5,5,6,7]
+Input: nums = [2,5,-2,4,1,6,3,0], k = 3
+Output: [5,5,4,6,6,6]
 ```
 
 **Notes**
@@ -1253,7 +1253,7 @@ public:
 **Example**
 
 ```text
-Input: grid = [[2,1,1],[1,1,0],[0,1,1]]
+Input: grid = [[2,1,0],[1,1,1],[0,1,1]]
 Output: 4
 ```
 
@@ -1264,7 +1264,7 @@ Output: 4
 
 ## 29 Find the Winner of the Circular Game (std::list and an iterator)
 
-**Exercises:** std::list, iterator · **Steps:** 46 · **Ends:** returns
+**Exercises:** std::list, iterator · **Steps:** 72 · **Ends:** returns
 
 **Watch for:** The `list` kind (two-way arrows, front/back) and an iterator moving around it; `erase` removes a node.
 
@@ -1293,8 +1293,8 @@ public:
 **Example**
 
 ```text
-Input: n = 5, k = 2
-Output: 3
+Input: n = 6, k = 3
+Output: 1
 ```
 
 **Notes**
@@ -1344,8 +1344,8 @@ public:
 **Example**
 
 ```text
-Input: head = [1,2,3,4,5]
-Output: [5,4,3,2,1]
+Input: head = [4,8,15,16,23]
+Output: [23,16,15,8,4]
 ```
 
 **Notes**
@@ -1396,8 +1396,8 @@ public:
 **Example**
 
 ```text
-Input: list1 = [1,2,4], list2 = [1,3,4]
-Output: [1,1,2,3,4,4]
+Input: list1 = [2,5,8], list2 = [1,5,9]
+Output: [1,2,5,5,8,9]
 ```
 
 **Notes**
@@ -1407,7 +1407,7 @@ Output: [1,1,2,3,4,4]
 
 ## 32 Linked List Cycle (pos, slow and fast)
 
-**Exercises:** linked list · **Steps:** 16 · **Ends:** returns
+**Exercises:** linked list · **Steps:** 12 · **Ends:** returns
 
 **Watch for:** A cycle drawn from the `pos` input; `slow` and `fast` tags meet on one node.
 
@@ -1444,7 +1444,7 @@ public:
 **Example**
 
 ```text
-Input: head = [3,2,0,-4], pos = 1
+Input: head = [6,1,9,4], pos = 2
 Output: true
 ```
 
@@ -1455,7 +1455,7 @@ Output: true
 
 ## 33 Remove Nth Node From End (node unlinked)
 
-**Exercises:** linked list · **Steps:** 23 · **Ends:** returns
+**Exercises:** linked list · **Steps:** 22 · **Ends:** returns
 
 **Watch for:** A node is skipped by a redirected edge; does the removed node fade out or stay drawn?
 
@@ -1494,8 +1494,8 @@ public:
 **Example**
 
 ```text
-Input: head = [1,2,3,4,5], n = 2
-Output: [1,2,3,5]
+Input: head = [10,20,30,40,50], n = 3
+Output: [10,20,40,50]
 ```
 
 **Notes**
@@ -1550,8 +1550,8 @@ public:
 **Example**
 
 ```text
-Input: l1 = [2,4,3], l2 = [5,6,4]
-Output: [7,0,8]
+Input: l1 = [9,1,6], l2 = [3,8,2]
+Output: [2,0,9]
 ```
 
 **Notes**
@@ -1595,8 +1595,8 @@ public:
 **Example**
 
 ```text
-Input: head = [7]
-Output: [7]
+Input: head = [42]
+Output: [42]
 ```
 
 **Notes**
@@ -1646,8 +1646,8 @@ public:
 **Example**
 
 ```text
-Input: root = [4,2,7,1,3,6,9]
-Output: [4,7,2,9,6,3,1]
+Input: root = [8,3,10,1,6,9,14]
+Output: [8,10,3,14,9,6,1]
 ```
 
 **Notes**
@@ -1702,8 +1702,8 @@ public:
 **Example**
 
 ```text
-Input: root = [3,9,20,null,null,15,7]
-Output: [[3],[9,20],[15,7]]
+Input: root = [1,2,3,4,null,null,5]
+Output: [[1],[2,3],[4,5]]
 ```
 
 **Notes**
@@ -1713,7 +1713,7 @@ Output: [[3],[9,20],[15,7]]
 
 ## 38 Validate Binary Search Tree (bounds as long long)
 
-**Exercises:** big int, tree, recursion (6 calls) · **Steps:** 20 · **Ends:** returns
+**Exercises:** big int, tree, recursion (7 calls) · **Steps:** 24 · **Ends:** returns
 
 **Watch for:** `LLONG_MIN` and `LLONG_MAX` are beyond 2^53: they travel as tagged ints and must show exactly, not rounded.
 
@@ -1748,7 +1748,7 @@ public:
 **Example**
 
 ```text
-Input: root = [5,1,4,null,null,3,6]
+Input: root = [10,5,15,null,null,6,20]
 Output: false
 ```
 
@@ -1759,7 +1759,7 @@ Output: false
 
 ## 39 Kth Smallest Element in a BST (iterative, stack of nodes)
 
-**Exercises:** stack, tree · **Steps:** 36 · **Ends:** returns
+**Exercises:** stack, tree · **Steps:** 29 · **Ends:** returns
 
 **Watch for:** Stack of node refs; `curr` walks down the left spine; the path from the root is blue.
 
@@ -1801,8 +1801,8 @@ public:
 **Example**
 
 ```text
-Input: root = [5,3,6,2,4,null,null,1], k = 3
-Output: 3
+Input: root = [7,3,9,1,5,null,null,null,2], k = 2
+Output: 2
 ```
 
 **Notes**
@@ -1812,7 +1812,7 @@ Output: 3
 
 ## 40 Diameter of Binary Tree (helper with an int& out-parameter)
 
-**Exercises:** tree, recursion (12 calls) · **Steps:** 52 · **Ends:** returns
+**Exercises:** tree, recursion (14 calls) · **Steps:** 61 · **Ends:** returns
 
 **Watch for:** A recursive helper that returns heights and updates `best` through a reference; the recursion card shows heights.
 
@@ -1851,8 +1851,8 @@ public:
 **Example**
 
 ```text
-Input: root = [1,2,3,4,5]
-Output: 3
+Input: root = [1,2,3,4,5,null,null,6]
+Output: 4
 ```
 
 **Notes**
@@ -1862,7 +1862,7 @@ Output: 3
 
 ## 41 Path Sum II (void backtracking on a tree)
 
-**Exercises:** array, tree, recursion (22 calls) · **Steps:** 120 · **Ends:** returns
+**Exercises:** array, tree, recursion (16 calls) · **Steps:** 87 · **Ends:** returns
 
 **Watch for:** Void recursion: the call-stack card instead of the recursion card; `path` pushes and pops.
 
@@ -1906,8 +1906,8 @@ public:
 **Example**
 
 ```text
-Input: root = [5,4,8,11,null,13,4,7,2,null,null,5,1], targetSum = 22
-Output: [[5,4,11,2],[5,8,4,5]]
+Input: root = [6,3,2,2,1,4,null,1], targetSum = 12
+Output: [[6,3,2,1],[6,2,4]]
 ```
 
 **Notes**
@@ -1919,7 +1919,7 @@ Output: [[5,4,11,2],[5,8,4,5]]
 
 **Exercises:** array, queue, tree, doubles · **Steps:** 55 · **Ends:** returns
 
-**Watch for:** Floating-point values: `sum` as a double, `result` an array of floats like `14.5`.
+**Watch for:** Floating-point values: `sum` as a double, `result` an array of floats like `4.5`.
 
 **Code**
 
@@ -1961,8 +1961,8 @@ public:
 **Example**
 
 ```text
-Input: root = [3,9,20,null,null,15,7]
-Output: [3.0,14.5,11.0]
+Input: root = [4,7,2,null,1,8]
+Output: [4.0,4.5,4.5]
 ```
 
 **Notes**
@@ -2031,8 +2031,8 @@ public:
 **Example**
 
 ```text
-Input: adjList = [[2,4],[1,3],[2,4],[1,3]]
-Output: [[2,4],[1,3],[2,4],[1,3]]
+Input: adjList = [[2,3],[1,3],[1,2,4],[3]]
+Output: [[2,3],[1,3],[1,2,4],[3]]
 ```
 
 **Notes**
@@ -2042,7 +2042,7 @@ Output: [[2,4],[1,3],[2,4],[1,3]]
 
 ## 44 Number of Islands (void DFS on a char grid)
 
-**Exercises:** array, recursion (19 calls) · **Steps:** 102 · **Ends:** returns
+**Exercises:** array, recursion (24 calls) · **Steps:** 123 · **Ends:** returns
 
 **Watch for:** A grid of chars changed in place by a void recursive DFS: the call-stack card while nested.
 
@@ -2078,8 +2078,8 @@ public:
 **Example**
 
 ```text
-Input: grid = [["1","1","0"],["0","1","0"],["0","0","1"]]
-Output: 2
+Input: grid = [["1","0","1"],["1","0","0"],["0","1","1"]]
+Output: 3
 ```
 
 **Notes**
@@ -2089,7 +2089,7 @@ Output: 2
 
 ## 45 Course Schedule (adjacency list local, Kahn's BFS)
 
-**Exercises:** array, queue · **Steps:** 56 · **Ends:** returns
+**Exercises:** array, queue · **Steps:** 68 · **Ends:** returns
 
 **Watch for:** `prerequisites` starts as a graph ("auto, from the name"); open its View menu to set the direction to `[a, b] is b → a`. `adj` is a local, so it starts as rows: pick "Graph (adjacency list)" in its menu and watch the arrows fill in.
 
@@ -2126,7 +2126,7 @@ public:
 **Example**
 
 ```text
-Input: numCourses = 4, prerequisites = [[1,0],[2,0],[3,1],[3,2]]
+Input: numCourses = 5, prerequisites = [[1,0],[2,1],[3,1],[4,2],[4,3]]
 Output: true
 ```
 
@@ -2137,9 +2137,9 @@ Output: true
 
 ## 46 Network Delay Time (Dijkstra, heap of pairs)
 
-**Exercises:** array, heap, pair · **Steps:** 56 · **Ends:** returns
+**Exercises:** array, heap, pair · **Steps:** 67 · **Ends:** returns
 
-**Watch for:** `times` drawn as a weighted graph from its edge list (each weight beside its edge); weighted adjacency of pairs, a min-heap of (distance, node), and `dist` with `INT_MAX` values. `u` and `v` (structured bindings) get markers under `dist`, and `u` one under `graph`; on the first step of `for (auto& [v, w] : graph[u])` the row `graph[u]` has a dashed read outline (a ring on node `u` in the graph view). Nodes 1 and 4 have no outgoing edges, so their loops have no step and no read.
+**Watch for:** `times` drawn as a weighted graph from its edge list (each weight beside its edge); weighted adjacency of pairs, a min-heap of (distance, node), and `dist` with `INT_MAX` values. `u` and `v` (structured bindings) get markers under `dist`, and `u` one under `graph`; on the first step of `for (auto& [v, w] : graph[u])` the row `graph[u]` has a dashed read outline (a ring on node `u` in the graph view). Node 4 has no outgoing edges, so its loop has no step and no read.
 
 **Code**
 
@@ -2179,8 +2179,8 @@ public:
 **Example**
 
 ```text
-Input: times = [[2,1,1],[2,3,1],[3,4,1]], n = 4, k = 2
-Output: 2
+Input: times = [[1,2,4],[1,3,1],[3,2,2],[2,4,1]], n = 4, k = 1
+Output: 4
 ```
 
 **Notes**
@@ -2190,7 +2190,7 @@ Output: 2
 
 ## 47 Redundant Connection (union-find with path compression)
 
-**Exercises:** array, recursion (9 calls) · **Steps:** 52 · **Ends:** returns
+**Exercises:** array, recursion (11 calls) · **Steps:** 65 · **Ends:** returns
 
 **Watch for:** `edges` drawn as a graph from its pairs; `parent` array changing as sets merge; a recursive `find` that returns values (recursion card).
 
@@ -2223,8 +2223,8 @@ public:
 **Example**
 
 ```text
-Input: edges = [[1,2],[1,3],[2,3]]
-Output: [2,3]
+Input: edges = [[1,2],[2,3],[3,4],[2,4]]
+Output: [2,4]
 ```
 
 **Notes**
@@ -2238,7 +2238,7 @@ Output: [2,3]
 
 ## 48 Fibonacci Number (plain recursion)
 
-**Exercises:** recursion (15 calls) · **Steps:** 45 · **Ends:** returns
+**Exercises:** recursion (25 calls) · **Steps:** 75 · **Ends:** returns
 
 **Watch for:** The recursion tree: every call with its return value; base cases amber; the return-to-caller arrow.
 
@@ -2259,8 +2259,8 @@ public:
 **Example**
 
 ```text
-Input: n = 5
-Output: 5
+Input: n = 6
+Output: 8
 ```
 
 **Notes**
@@ -2270,9 +2270,9 @@ Output: 5
 
 ## 49 Fibonacci, large (recursion tree folding)
 
-**Exercises:** recursion (109 calls) · **Steps:** 327 · **Ends:** returns
+**Exercises:** recursion (177 calls) · **Steps:** 531 · **Ends:** returns
 
-**Watch for:** 109 calls, past the 80-call limit: finished branches fold into one box and the path to the running call stays whole.
+**Watch for:** 177 calls, past the 80-call limit: finished branches fold into one box and the path to the running call stays whole.
 
 **Code**
 
@@ -2291,8 +2291,8 @@ public:
 **Example**
 
 ```text
-Input: n = 9
-Output: 34
+Input: n = 10
+Output: 55
 ```
 
 **Notes**
@@ -2302,7 +2302,7 @@ Output: 34
 
 ## 50 Climbing Stairs (memoized recursion, map by reference)
 
-**Exercises:** map, recursion (10 calls) · **Steps:** 40 · **Ends:** returns
+**Exercises:** map, recursion (12 calls) · **Steps:** 49 · **Ends:** returns
 
 **Watch for:** A memo map passed by reference: callers see it fill in; later calls return at once.
 
@@ -2328,8 +2328,8 @@ public:
 **Example**
 
 ```text
-Input: n = 6
-Output: 13
+Input: n = 7
+Output: 21
 ```
 
 **Notes**
@@ -2339,7 +2339,7 @@ Output: 13
 
 ## 51 Coin Change (1D DP table)
 
-**Exercises:** array · **Steps:** 110 · **Ends:** returns
+**Exercises:** array · **Steps:** 96 · **Ends:** returns
 
 **Watch for:** `dp` filled left to right, `amount + 1` as infinity, `i` under `dp`. Since v0.12 `dp[i - coin]` gives `coin` no marker; `dp[amount]` still pins `amount` on `dp`'s last cell, since that index is `amount` itself.
 
@@ -2366,8 +2366,8 @@ public:
 **Example**
 
 ```text
-Input: coins = [1,2,5], amount = 11
-Output: 3
+Input: coins = [2,3,7], amount = 10
+Output: 2
 ```
 
 **Notes**
@@ -2377,7 +2377,7 @@ Output: 3
 
 ## 52 Unique Paths (2D DP table)
 
-**Exercises:** array · **Steps:** 20 · **Ends:** returns
+**Exercises:** array · **Steps:** 24 · **Ends:** returns
 
 **Watch for:** A 2D `dp` grid filled row by row: a strong case for a grid view.
 
@@ -2401,8 +2401,8 @@ public:
 **Example**
 
 ```text
-Input: m = 3, n = 4
-Output: 10
+Input: m = 3, n = 5
+Output: 15
 ```
 
 **Notes**
@@ -2412,7 +2412,7 @@ Output: 10
 
 ## 53 Longest Common Subsequence (2D DP over two strings)
 
-**Exercises:** array · **Steps:** 60 · **Ends:** returns
+**Exercises:** array · **Steps:** 120 · **Ends:** returns
 
 **Watch for:** Two strings and a (m+1) x (n+1) table; check readability of a bigger nested array. Known flaw: `dp[m][n]` pins an `m` marker on `dp`'s last row for the whole run.
 
@@ -2441,7 +2441,7 @@ public:
 **Example**
 
 ```text
-Input: text1 = "abcde", text2 = "ace"
+Input: text1 = "stone", text2 = "longest"
 Output: 3
 ```
 
@@ -2482,8 +2482,8 @@ public:
 **Example**
 
 ```text
-Input: nums = [1,2,3]
-Output: [[],[1],[1,2],[1,2,3],[1,3],[2],[2,3],[3]]
+Input: nums = [4,5,6]
+Output: [[],[4],[4,5],[4,5,6],[4,6],[5],[5,6],[6]]
 ```
 
 **Notes**
@@ -2530,8 +2530,8 @@ public:
 **Example**
 
 ```text
-Input: nums = [1,2,3]
-Output: [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
+Input: nums = [7,8,9]
+Output: [[7,8,9],[7,9,8],[8,7,9],[8,9,7],[9,7,8],[9,8,7]]
 ```
 
 **Notes**
@@ -2610,8 +2610,8 @@ public:
 **Example**
 
 ```text
-Input: x = 2.00000, n = -2
-Output: 0.25
+Input: x = 0.50000, n = -3
+Output: 8.0
 ```
 
 **Notes**
@@ -2647,8 +2647,8 @@ public:
 **Example**
 
 ```text
-Input: nums = [4,1,2,1,2]
-Output: 4
+Input: nums = [7,3,5,3,7]
+Output: 5
 ```
 
 **Notes**
@@ -2658,7 +2658,7 @@ Output: 4
 
 ## 59 Number of 1 Bits (unsigned, shifts)
 
-**Exercises:** scalars · **Steps:** 16 · **Ends:** returns
+**Exercises:** scalars · **Steps:** 19 · **Ends:** returns
 
 **Watch for:** An unsigned `uint32_t` shifting right; values in the locals table each step.
 
@@ -2681,8 +2681,8 @@ public:
 **Example**
 
 ```text
-Input: n = 11
-Output: 3
+Input: n = 29
+Output: 4
 ```
 
 **Notes**
@@ -2692,7 +2692,7 @@ Output: 3
 
 ## 60 Sqrt(x) (binary search with long long)
 
-**Exercises:** scalars · **Steps:** 136 · **Ends:** returns
+**Exercises:** scalars · **Steps:** 138 · **Ends:** returns
 
 **Watch for:** `mid * mid` computed in `long long`; `lo`/`hi` are not indexes into anything, so no markers.
 
@@ -2720,8 +2720,8 @@ public:
 **Example**
 
 ```text
-Input: x = 2147395599
-Output: 46339
+Input: x = 2000000000
+Output: 44721
 ```
 
 **Notes**
@@ -2731,7 +2731,7 @@ Output: 46339
 
 ## 61 Reverse Integer (overflow check)
 
-**Exercises:** scalars · **Steps:** 22 · **Ends:** returns
+**Exercises:** scalars · **Steps:** 28 · **Ends:** returns
 
 **Watch for:** Negative numbers, `INT_MAX / 10` comparisons, and a zero result on overflow.
 
@@ -2757,8 +2757,8 @@ public:
 **Example**
 
 ```text
-Input: x = -123
-Output: -321
+Input: x = -4510
+Output: -154
 ```
 
 **Notes**
@@ -2829,7 +2829,7 @@ public:
 **Example**
 
 ```text
-Input: n = 3
+Input: n = 4
 Output: (never returns)
 ```
 
@@ -2868,7 +2868,7 @@ public:
 **Example**
 
 ```text
-Input: head = [1]
+Input: head = [9]
 Output: (crashes)
 ```
 
@@ -2898,7 +2898,7 @@ public:
 **Example**
 
 ```text
-Input: n = 4
+Input: n = 6
 Output: (does not compile)
 ```
 
@@ -2927,7 +2927,7 @@ public:
 **Example**
 
 ```text
-Input: a = 1, c = 2
+Input: a = 5, c = 8
 Output: (cannot run)
 ```
 
@@ -2960,8 +2960,8 @@ public:
 **Example**
 
 ```text
-Input: nums = [4,7,2,9]
-Output: 42
+Input: nums = [3,8,5,6]
+Output: 46
 ```
 
 **Notes**
@@ -2973,7 +2973,7 @@ Output: 42
 
 ## 68 Climbing Stairs (memo as a member)
 
-**Exercises:** map (member), recursion (9 calls) · **Steps:** 28 · **Ends:** returns
+**Exercises:** map (member), recursion (9 calls) · **Steps:** 37 · **Ends:** returns
 
 **Watch for:** `memo` is a member of `Solution`, not a local: one card with a `member` tag, the same at every depth of the recursion, filling as calls return. `memo.count(n)` and `memo[n]` outline the entry they found (v0.12). The state panel lists `memo` under "Members of Solution".
 
@@ -2995,8 +2995,8 @@ public:
 **Example**
 
 ```text
-Input: n = 5
-Output: 8
+Input: n = 6
+Output: 13
 ```
 
 **Notes**
@@ -3008,7 +3008,7 @@ Output: 8
 
 ## 69 Merge Intervals (intervals hint)
 
-**Exercises:** array (intervals view) · **Steps:** 17 · **Ends:** returns
+**Exercises:** array (intervals view) · **Steps:** 20 · **Ends:** returns
 
 **Watch for:** `intervals` drawn as bars on a number line ("auto, from the name"), with `i` beside the row it is on and the row each line reads dashed. `merged` is a local, so it starts as a grid: pick "Intervals" in its View menu and the two cards share one number line. The bar that grows turns amber.
 
@@ -3035,8 +3035,8 @@ public:
 **Example**
 
 ```text
-Input: intervals = [[1,3],[2,6],[8,10],[15,18]]
-Output: [[1,6],[8,10],[15,18]]
+Input: intervals = [[1,4],[2,5],[7,9],[8,10],[12,13]]
+Output: [[1,5],[7,10],[12,13]]
 ```
 
 **Notes**
@@ -3046,9 +3046,9 @@ Output: [[1,6],[8,10],[15,18]]
 
 ## 70 Number of Provinces (adjacency matrix hint)
 
-**Exercises:** array (graph view), recursion · **Steps:** 44 · **Ends:** returns
+**Exercises:** array (graph view), recursion · **Steps:** 65 · **Ends:** returns
 
-**Watch for:** `isConnected` drawn as a graph from its matrix (0 and 1 joined, 2 alone); the edge `isConnected[u][v]` lights up when it is read. Switch it to Grid and back in its View menu; the dimmed options say why they do not fit.
+**Watch for:** `isConnected` drawn as a graph from its matrix (0 and 3 joined, 1 and 2 joined); the edge `isConnected[u][v]` lights up when it is read. Switch it to Grid and back in its View menu; the dimmed options say why they do not fit.
 
 **Code**
 
@@ -3077,7 +3077,7 @@ public:
 **Example**
 
 ```text
-Input: isConnected = [[1,1,0],[1,1,0],[0,0,1]]
+Input: isConnected = [[1,0,0,1],[0,1,1,0],[0,1,1,0],[1,0,0,1]]
 Output: 2
 ```
 
@@ -3113,7 +3113,7 @@ class Solution:
 **Example**
 
 ```text
-Input: nums = [3,2,4,6], target = 10
+Input: nums = [4,9,1,6], target = 7
 Output: [2,3]
 ```
 
@@ -3124,7 +3124,7 @@ Output: [2,3]
 
 ## 72 Valid Parentheses (list as a stack)
 
-**Exercises:** array, map · **Steps:** 26 · **Ends:** returns
+**Exercises:** array, map · **Steps:** 33 · **Ends:** returns
 
 **Watch for:** `stack` is a list, so it is drawn as an array that grows and shrinks at its end; `pairs[c]` is outlined when read.
 
@@ -3148,7 +3148,7 @@ class Solution:
 **Example**
 
 ```text
-Input: s = "([]{})"
+Input: s = "{[()()]}"
 Output: true
 ```
 
@@ -3159,7 +3159,7 @@ Output: true
 
 ## 73 Kth Largest Element (heapq min-heap)
 
-**Exercises:** priority queue (min) · **Steps:** 26 · **Ends:** returns
+**Exercises:** priority queue (min) · **Steps:** 25 · **Ends:** returns
 
 **Watch for:** `heap` is drawn as a min priority queue, not an array, because the code passes it to `heapq`; the smallest of the k largest stays on top.
 
@@ -3179,8 +3179,8 @@ class Solution:
 **Example**
 
 ```text
-Input: nums = [3,2,1,5,6,4], k = 2
-Output: 5
+Input: nums = [7,4,9,1,6,3], k = 3
+Output: 6
 ```
 
 **Notes**
@@ -3211,8 +3211,8 @@ class Solution:
 **Example**
 
 ```text
-Input: nums = [1,1,1,2,2,3], k = 2
-Output: [2,1]
+Input: nums = [5,5,7,7,7,9], k = 2
+Output: [5,7]
 ```
 
 **Notes**
@@ -3222,7 +3222,7 @@ Output: [2,1]
 
 ## 75 Number of Islands (deque BFS on a grid)
 
-**Exercises:** array (grid), deque · **Steps:** 101 · **Ends:** returns
+**Exercises:** array (grid), deque · **Steps:** 120 · **Ends:** returns
 
 **Watch for:** `grid` as a grid of strings; `q` is a deque of tuples.
 
@@ -3252,8 +3252,8 @@ class Solution:
 **Example**
 
 ```text
-Input: grid = [["1","1","0"],["0","1","0"],["0","0","1"]]
-Output: 2
+Input: grid = [["1","0","1"],["1","0","0"],["0","1","1"]]
+Output: 3
 ```
 
 **Notes**
@@ -3263,7 +3263,7 @@ Output: 2
 
 ## 76 Contains Duplicate III (SortedList)
 
-**Exercises:** multiset (SortedList) · **Steps:** 38 · **Ends:** returns
+**Exercises:** multiset (SortedList) · **Steps:** 32 · **Ends:** returns
 
 **Watch for:** `window` is a `SortedList`, drawn as a multiset; `bisect_left` gives a position, not an iterator.
 
@@ -3286,7 +3286,7 @@ class Solution:
 **Example**
 
 ```text
-Input: nums = [1,5,9,1,5,9], indexDiff = 2, valueDiff = 3
+Input: nums = [8,3,12,6,2], indexDiff = 2, valueDiff = 1
 Output: false
 ```
 
@@ -3323,8 +3323,8 @@ class Solution:
 **Example**
 
 ```text
-Input: head = [1,2,3,4,5]
-Output: [5,4,3,2,1]
+Input: head = [4,8,15,16,23]
+Output: [23,16,15,8,4]
 ```
 
 **Notes**
@@ -3334,7 +3334,7 @@ Output: [5,4,3,2,1]
 
 ## 78 Maximum Depth of Binary Tree (recursion)
 
-**Exercises:** tree, recursion · **Steps:** 43 · **Ends:** returns
+**Exercises:** tree, recursion · **Steps:** 51 · **Ends:** returns
 
 **Watch for:** The recursion card shows each call with its node and its return value; the tree's `root` tag moves with the call.
 
@@ -3359,8 +3359,8 @@ class Solution:
 **Example**
 
 ```text
-Input: root = [3,9,20,null,null,15,7]
-Output: 3
+Input: root = [1,2,3,4,null,null,5,null,6]
+Output: 4
 ```
 
 **Notes**
@@ -3372,7 +3372,7 @@ Output: 3
 
 **Exercises:** graph, map · **Steps:** 48 · **Ends:** returns
 
-**Watch for:** LeetCode shows `Node` inside a triple-quoted string; it is read from there. Both graphs are drawn, the clone growing beside the original.
+**Watch for:** The `Node` definition comes inside a triple-quoted string, as in LeetCode's Python format; it is read from there. Both graphs are drawn, the clone growing beside the original.
 
 **Code**
 
@@ -3405,8 +3405,8 @@ class Solution:
 **Example**
 
 ```text
-Input: adjList = [[2,4],[1,3],[2,4],[1,3]]
-Output: [[2,4],[1,3],[2,4],[1,3]]
+Input: adjList = [[2,3],[1,3],[1,2,4],[3]]
+Output: [[2,3],[1,3],[1,2,4],[3]]
 ```
 
 **Notes**
@@ -3416,7 +3416,7 @@ Output: [[2,4],[1,3],[2,4],[1,3]]
 
 ## 80 Climbing Stairs (memo as a member)
 
-**Exercises:** map (member), recursion · **Steps:** 31 · **Ends:** returns
+**Exercises:** map (member), recursion · **Steps:** 40 · **Ends:** returns
 
 **Watch for:** `memo` appears under Members from the step after `self.memo = {}`, not before; `self.memo[n]` reads are outlined.
 
@@ -3440,8 +3440,8 @@ class Solution:
 **Example**
 
 ```text
-Input: n = 5
-Output: 8
+Input: n = 6
+Output: 13
 ```
 
 **Notes**
@@ -3475,8 +3475,8 @@ class Solution:
 **Example**
 
 ```text
-Input: nums = [1,2,3]
-Output: [[],[1],[1,2],[1,2,3],[1,3],[2],[2,3],[3]]
+Input: nums = [4,5,6]
+Output: [[],[4],[4,5],[4,5,6],[4,6],[5],[5,6],[6]]
 ```
 
 **Notes**
@@ -3486,7 +3486,7 @@ Output: [[],[1],[1,2],[1,2,3],[1,3],[2],[2,3],[3]]
 
 ## 82 Fibonacci with @cache (memo not shown)
 
-**Exercises:** scalars, recursion · **Steps:** 27 · **Ends:** returns
+**Exercises:** scalars, recursion · **Steps:** 30 · **Ends:** returns
 
 **Watch for:** A known limitation: the `@cache` table lives inside `functools`, so no card shows it. The recursion card shows that each `fib(k)` is computed once.
 
@@ -3506,8 +3506,8 @@ class Solution:
 **Example**
 
 ```text
-Input: n = 6
-Output: 8
+Input: n = 7
+Output: 13
 ```
 
 **Notes**
@@ -3533,7 +3533,7 @@ class Solution:
 **Example**
 
 ```text
-Input: nums = [1,2,3]
+Input: nums = [5,6,7]
 Output: (raises IndexError)
 ```
 
@@ -3561,7 +3561,7 @@ class Solution:
 **Example**
 
 ```text
-Input: n = 1
+Input: n = 2
 Output: (never returns)
 ```
 
@@ -3601,7 +3601,7 @@ class Solution {
 **Example**
 
 ```text
-Input: nums = [3,2,4,6], target = 10
+Input: nums = [4,9,1,6], target = 7
 Output: [2,3]
 ```
 
@@ -3612,7 +3612,7 @@ Output: [2,3]
 
 ## 86 Container With Most Water (two pointers)
 
-**Exercises:** array · **Steps:** 46 · **Ends:** returns
+**Exercises:** array · **Steps:** 36 · **Ends:** returns
 
 **Watch for:** `left` and `right` markers walk in from both ends of `height`; `best` grows as wider or taller pairs are found.
 
@@ -3640,8 +3640,8 @@ class Solution {
 **Example**
 
 ```text
-Input: height = [1,8,6,2,5,4,8,3,7]
-Output: 49
+Input: height = [2,7,4,1,8,3,6]
+Output: 30
 ```
 
 **Notes**
@@ -3651,7 +3651,7 @@ Output: 49
 
 ## 87 Valid Parentheses (Deque used as a stack)
 
-**Exercises:** stack · **Steps:** 27 · **Ends:** returns
+**Exercises:** stack · **Steps:** 35 · **Ends:** returns
 
 **Watch for:** `st` is an `ArrayDeque`, but the code only pushes, pops, and peeks, so it is drawn as a stack: its top is the last item.
 
@@ -3680,7 +3680,7 @@ class Solution {
 **Example**
 
 ```text
-Input: s = "([]{})"
+Input: s = "{[()()]}"
 Output: true
 ```
 
@@ -3726,8 +3726,8 @@ class Solution {
 **Example**
 
 ```text
-Input: head = [1,2,3,4,5]
-Output: [5,4,3,2,1]
+Input: head = [4,8,15,16,23]
+Output: [23,16,15,8,4]
 ```
 
 **Notes**
@@ -3737,7 +3737,7 @@ Output: [5,4,3,2,1]
 
 ## 89 Maximum Depth of Binary Tree (recursion)
 
-**Exercises:** tree, recursion · **Steps:** 43 · **Ends:** returns
+**Exercises:** tree, recursion · **Steps:** 51 · **Ends:** returns
 
 **Watch for:** The recursion card shows each call with its node and what it returned; `root` moves down the tree with the calls.
 
@@ -3774,8 +3774,8 @@ class Solution {
 **Example**
 
 ```text
-Input: root = [3,9,20,null,null,15,7]
-Output: 3
+Input: root = [1,2,3,4,null,null,5,null,6]
+Output: 4
 ```
 
 **Notes**
@@ -3785,7 +3785,7 @@ Output: 3
 
 ## 90 Number of Islands (void DFS on a char grid)
 
-**Exercises:** array (grid), recursion · **Steps:** 102 · **Ends:** returns
+**Exercises:** array (grid), recursion · **Steps:** 123 · **Ends:** returns
 
 **Watch for:** `grid` as a grid of characters; each land cell turns to water as `sink` reaches it, and the call-stack card shows the void recursion.
 
@@ -3820,8 +3820,8 @@ class Solution {
 **Example**
 
 ```text
-Input: grid = [["1","1","0"],["0","1","0"],["0","0","1"]]
-Output: 2
+Input: grid = [["1","0","1"],["1","0","0"],["0","1","1"]]
+Output: 3
 ```
 
 **Notes**
@@ -3860,8 +3860,8 @@ class Solution {
 **Example**
 
 ```text
-Input: nums = [1,2,3]
-Output: [[],[1],[1,2],[1,2,3],[1,3],[2],[2,3],[3]]
+Input: nums = [4,5,6]
+Output: [[],[4],[4,5],[4,5,6],[4,6],[5],[5,6],[6]]
 ```
 
 **Notes**
@@ -3871,7 +3871,7 @@ Output: [[],[1],[1,2],[1,2,3],[1,3],[2],[2,3],[3]]
 
 ## 92 Climbing Stairs (memo as a member)
 
-**Exercises:** map (member), recursion · **Steps:** 28 · **Ends:** returns
+**Exercises:** map (member), recursion · **Steps:** 37 · **Ends:** returns
 
 **Watch for:** `memo` is a field of Solution, shown under Members at every step; `memo.containsKey(n)` and `memo.get(n)` outline the entry they read.
 
@@ -3893,8 +3893,8 @@ class Solution {
 **Example**
 
 ```text
-Input: n = 5
-Output: 8
+Input: n = 6
+Output: 13
 ```
 
 **Notes**
@@ -3908,7 +3908,7 @@ The C++ and Python versions of Examples menu problems that the sections above di
 
 ## 93 Maximum Depth of Binary Tree (recursion)
 
-**Exercises:** tree, recursion · **Steps:** 43 · **Ends:** returns
+**Exercises:** tree, recursion · **Steps:** 51 · **Ends:** returns
 
 **Watch for:** The recursion card shows each call with its node and what it returned, as in the Python and Java cases.
 
@@ -3942,8 +3942,8 @@ public:
 **Example**
 
 ```text
-Input: root = [3,9,20,null,null,15,7]
-Output: 3
+Input: root = [1,2,3,4,null,null,5,null,6]
+Output: 4
 ```
 
 **Notes**
@@ -3953,7 +3953,7 @@ Output: 3
 
 ## 94 Container With Most Water (two pointers)
 
-**Exercises:** array · **Steps:** 45 · **Ends:** returns
+**Exercises:** array · **Steps:** 35 · **Ends:** returns
 
 **Watch for:** `left` and `right` markers walk in from both ends of `height`, as in the C++ and Java cases.
 
@@ -3977,8 +3977,8 @@ class Solution:
 **Example**
 
 ```text
-Input: height = [1,8,6,2,5,4,8,3,7]
-Output: 49
+Input: height = [2,7,4,1,8,3,6]
+Output: 30
 ```
 
 **Notes**
@@ -4008,7 +4008,7 @@ Output: [2998,2999]
 
 ## 96 Course Schedule (Python, adjacency list and deque)
 
-**Exercises:** array, deque · **Steps:** 51 · **Ends:** returns
+**Exercises:** array, deque · **Steps:** 62 · **Ends:** returns
 
 **Watch for:** `prerequisites` starts as a graph ("auto, from the name"); set its direction to `[a, b] is b → a` in the View menu. `adj` is a local, so it starts as rows: pick "Graph (adjacency list)" and watch the arrows fill in, as in case 45. `ready` is a deque (Python's `collections.deque`), drawn as a tube.
 
@@ -4037,7 +4037,7 @@ class Solution:
 **Example**
 
 ```text
-Input: numCourses = 4, prerequisites = [[1,0],[2,0],[3,1],[3,2]]
+Input: numCourses = 5, prerequisites = [[1,0],[2,1],[3,1],[4,2],[4,3]]
 Output: true
 ```
 
@@ -4048,7 +4048,7 @@ Output: true
 
 ## 97 Course Schedule (Java, adjacency list and queue)
 
-**Exercises:** array, queue · **Steps:** 61 · **Ends:** returns
+**Exercises:** array, queue · **Steps:** 74 · **Ends:** returns
 
 **Watch for:** The same as cases 45 and 96: `prerequisites` as a graph, `adj` (a `List<List<Integer>>`) as rows until "Graph (adjacency list)" is picked, and `ready` as a queue tube. `adj` starts empty and gains one row per course before the edges arrive.
 
@@ -4084,7 +4084,7 @@ class Solution {
 **Example**
 
 ```text
-Input: numCourses = 4, prerequisites = [[1,0],[2,0],[3,1],[3,2]]
+Input: numCourses = 5, prerequisites = [[1,0],[2,1],[3,1],[4,2],[4,3]]
 Output: true
 ```
 
@@ -4095,7 +4095,7 @@ Output: true
 
 ## 98 Unique Paths (Python, 2D DP table)
 
-**Exercises:** array (grid) · **Steps:** 20 · **Ends:** returns
+**Exercises:** array (grid) · **Steps:** 24 · **Ends:** returns
 
 **Watch for:** `dp` as a grid, filled row by row as in case 52: each new cell flashes as it is written, and the two cells it adds, above and to the left, get a dashed outline.
 
@@ -4114,8 +4114,8 @@ class Solution:
 **Example**
 
 ```text
-Input: m = 3, n = 4
-Output: 10
+Input: m = 3, n = 5
+Output: 15
 ```
 
 **Notes**
@@ -4125,7 +4125,7 @@ Output: 10
 
 ## 99 Unique Paths (Java, 2D DP table)
 
-**Exercises:** array (grid) · **Steps:** 26 · **Ends:** returns
+**Exercises:** array (grid) · **Steps:** 30 · **Ends:** returns
 
 **Watch for:** `dp` starts as zeros (Java's default), each row is filled with ones, then the table fills as in cases 52 and 98, with the cells above and to the left outlined as they are read.
 
@@ -4149,8 +4149,8 @@ class Solution {
 **Example**
 
 ```text
-Input: m = 3, n = 4
-Output: 10
+Input: m = 3, n = 5
+Output: 15
 ```
 
 **Notes**

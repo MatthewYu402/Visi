@@ -5,7 +5,7 @@
   </picture>
 </p>
 
-<p align="center">Step through a LeetCode solution and watch its data structures change.</p>
+<p align="center">Step through a <code>Solution</code> class and watch its data structures change.</p>
 
 ## Inspiration behind the project
 For most students learning visually is more effective rather than pure conceptual practice. Seeing the problem unfold and understanding why one solution may not work while another might as a data structure on the screen feels more tangible. Instead of picturing how a data structure works in a given problem, a visual can help immensely.
@@ -16,9 +16,9 @@ The rest of the file goes over the project, including the architecture, and deci
 
 ## What it does
 
-You paste a LeetCode `Solution` class, give it an example input, and step through it. At every step the tool shows the line being executed and draws the data structures the solution is using (array, hash map, stack, queue, linked list, tree, graph, ...) as they change.
+You paste a `Solution` class, give it an example input, and step through it. At every step the tool shows the line being executed and draws the data structures the solution is using (array, hash map, stack, queue, linked list, tree, graph, ...) as they change.
 
-It works with the `Solution` class exactly as LeetCode gives it to you. No annotations or rewriting by hand are needed. There is no problem catalog: everything the visualizer needs is derived from your code and the example.
+It works with `Solution` classes in the LeetCode format, including the commented `ListNode`, `TreeNode`, or `Node` definitions above the class, which Visi builds on to know how your linked structures are made. No annotations or rewriting by hand are needed. There is no problem catalog: everything the visualizer needs is derived from your code and the example.
 
 **Supported problems: algorithmic ones**, where you call one method of `Solution` with arguments (Two Sum, Reverse Linked List, Maximum Depth of Binary Tree, Clone Graph, Subsets, ...). The page shows one input field per parameter of that method. **Design problems are not supported yet**: LRU Cache, Min Stack, and the like, where the example is a sequence of calls on an object you construct (`["LRUCache","put","get"]` with `[[2],[1,1],[1]]`). One trace covering a whole call sequence needs a change to the trace format; it is planned for later ([`docs/driver-generation.md` §8](docs/driver-generation.md)).
 
@@ -28,7 +28,7 @@ It works with the `Solution` class exactly as LeetCode gives it to you. No annot
 
 ### What you can do today
 
-- **Paste a LeetCode `Solution` in C++, Python, or Java**, exactly as LeetCode gives it, and run it on an example. The inputs panel shows one field per parameter of the method, and pasting LeetCode's example text (`Input: ... Output: ...`) fills them.
+- **Paste a `Solution` class in C++, Python, or Java**, with the comments above it, and run it on an example. The inputs panel shows one field per parameter of the method, and pasting an example (`Input: ... Output: ...`) fills them.
 - **Step through the run** line by line, forward and back, or play it at 0.5×, 1×, or 2×. The code panel highlights the line about to run, and the state panel shows the running statement, what it produced (a condition's result, a stored value, a return value), and every local.
 - **See every structure drawn as it changes**: arrays and 2D grids, strings as characters, hash maps and sets, stacks, queues, deques, priority queues, tuples, linked lists, binary trees, and graphs. Pointer markers sit under the cells the code indexes, the cells a line read get a dashed outline, and every change is coloured and animated.
 - **Follow recursion**: a recursion card (as a tree or as a stack) for calls that return values, and a call-stack card for calls that return nothing. Recursive and backtracking solutions show every call in progress.
@@ -58,7 +58,7 @@ flowchart LR
     ◀ raw trace" --> sb
 ```
 
-The browser sends your `Solution` and example to the API service, which runs them in a locked-down container for that language. There, a language adapter wraps your code in LeetCode's harness, records the state before every line, and turns each language's values into one neutral **trace format**: a JSON list of snapshots in which an `unordered_map`, a `dict`, and a `HashMap` are all just a `map`. The service validates the trace and sends it back, and the frontend replays it. The frontend never knows which language ran, so every structure is drawn the same way in C++, Python, and Java.
+The browser sends your `Solution` and example to the API service, which runs them in a locked-down container for that language. There, a language adapter wraps your code in a harness that calls it the way the LeetCode format expects, records the state before every line, and turns each language's values into one neutral **trace format**: a JSON list of snapshots in which an `unordered_map`, a `dict`, and a `HashMap` are all just a `map`. The service validates the trace and sends it back, and the frontend replays it. The frontend never knows which language ran, so every structure is drawn the same way in C++, Python, and Java.
 
 How each part works, and why it is set up this way, is in **[How Visi works](docs/architecture.md)**.
 
@@ -148,7 +148,7 @@ npm run build      # typecheck + production build
 | [`docs/trace-format.md`](docs/trace-format.md) | The contract between backend and frontend: value kinds, steps, rules for adapter authors |
 | [`docs/native-tracing.md`](docs/native-tracing.md) | How an adapter observes a program using runtime hooks or source instrumentation |
 | [`docs/dap.md`](docs/dap.md) | How an adapter could observe a program through a debugger (Debug Adapter Protocol); not used yet |
-| [`docs/driver-generation.md`](docs/driver-generation.md) | Parsing method signatures and example input, LeetCode helper types |
+| [`docs/driver-generation.md`](docs/driver-generation.md) | Parsing method signatures and example input, the helper types (`ListNode`, `TreeNode`, `Node`) |
 | [`docs/adapters/cpp.md`](docs/adapters/cpp.md), [`python.md`](docs/adapters/python.md), [`java.md`](docs/adapters/java.md) | Each language's adapter: how it traces, and its normalization rules |
 | [`docs/sandboxing.md`](docs/sandboxing.md) | The sandbox: isolation, resource limits, how files get in and out, where validation runs |
 | [`docs/backend.md`](docs/backend.md) | The API service: endpoints, errors and status codes, limits, settings |

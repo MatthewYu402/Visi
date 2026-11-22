@@ -58,7 +58,7 @@ A followed function is a method of `class Solution`, a function defined at the t
 | `collections.deque` | `deque` | |
 | `SortedList` | `multiset` | From `sortedcontainers` (in the image, §7) |
 | `SortedSet`, `SortedDict` | `set`, `map` | |
-| an instance of a class from the user's file or LeetCode's comment (`ListNode`, `TreeNode`, `Node`) | `object` in the heap, written as a `ref` | Its fields are its instance attributes, in order of assignment |
+| an instance of a class from the user's file or the comment above the Solution (`ListNode`, `TreeNode`, `Node`) | `object` in the heap, written as a `ref` | Its fields are its instance attributes, in order of assignment |
 
 - **Python has no `char`.** A one-letter string is a `string`, and so is the neutral type of a `str` parameter.
 - **Anything else is not data.** A local holding a function, a module, an iterator, a `range`, or an instance of a library class is left out of the step, never written as text (CLAUDE.md invariant 5). A container holding one is left out whole.
@@ -108,10 +108,10 @@ A step's `members` hold the Solution's instance attributes (`self.memo`, `self.v
 
 ## 6. The driver
 
-`driver/python/` mirrors `driver/cpp/` and shares its rules for choosing the method, reading LeetCode's example text, decoding linked structures (`driver/shapes.py`), and inferring hints (`driver/hints.py`).
+`driver/python/` mirrors `driver/cpp/` and shares its rules for choosing the method, reading the example text, decoding linked structures (`driver/shapes.py`), and inferring hints (`driver/hints.py`).
 
-- **Signature.** LeetCode's Python 3 stubs annotate every method (`def twoSum(self, nums: List[int], target: int) -> List[int]:`), so each parameter's neutral type comes from its type hint (`types.py`): `List[int]` and `list[int]` are `array<int>`, `Optional[TreeNode]` is `TreeNode`, `Dict[str, int]` is `map<string, int>`, `'Node'` is `Node`, and a `-> None` return is `void`. A method without hints is listed but cannot be run. For the input form only, a method with no body yet (LeetCode's empty template) reads as if its body were `pass`.
-- **Node classes.** `ListNode` and `TreeNode` are supplied. Any other class is read from LeetCode's comment above the Solution, in `#` lines or inside a triple-quoted string, as LeetCode shows `Node`: its fields are the `self.x = ...` assignments in `__init__`, which also give its shape (graph, n-ary tree, random list, ...) by the C++ driver's table. A commented "class" with no fields is prose and is ignored.
+- **Signature.** Python Solutions in the LeetCode format annotate every method (`def twoSum(self, nums: List[int], target: int) -> List[int]:`), so each parameter's neutral type comes from its type hint (`types.py`): `List[int]` and `list[int]` are `array<int>`, `Optional[TreeNode]` is `TreeNode`, `Dict[str, int]` is `map<string, int>`, `'Node'` is `Node`, and a `-> None` return is `void`. A method without hints is listed but cannot be run. For the input form only, a method with no body yet (LeetCode's empty template) reads as if its body were `pass`.
+- **Node classes.** `ListNode` and `TreeNode` are supplied. Any other class is read from the comment above the Solution, in `#` lines or inside a triple-quoted string (the LeetCode format puts `Node` in one): its fields are the `self.x = ...` assignments in `__init__`, which also give its shape (graph, n-ary tree, random list, ...) by the C++ driver's table. A commented "class" with no fields is prose and is ignored.
 - **`run.json`.** The driver writes no code. It writes the method, the problem object, each argument as a JSON value (or, for a linked structure, its node records and root), and the node classes from the comments. `run.py` builds the arguments from it, so no value is ever pasted into a program's text.
 
 **Names a Solution can use without importing them** (`PRELUDE` in `run.py`): everything in `typing`; the modules `collections`, `heapq`, `bisect`, `math`, `itertools`, `functools`, `operator`, `string`, `re`, and `random`; every name in `collections`, `heapq`, `bisect`, `itertools`, and `functools`; `SortedList`, `SortedSet`, and `SortedDict`; and `ListNode` and `TreeNode`. LeetCode does not publish its own list, so this one is ours, chosen to cover what Solutions use.

@@ -100,7 +100,7 @@ What an adapter is made of:
 
 | Piece | What it does | Examples in this repo |
 |---|---|---|
-| **Driver** | Reads the Solution's signature and LeetCode's example text, and rebuilds LeetCode's harness: helper types (`ListNode`, `TreeNode`, `Node`), the arguments, the call. Writes the problem's neutral types and hints | `driver/cpp/`, `driver/python/`, `driver/java/`; the shared example parser is `driver/example.py` |
+| **Driver** | Reads the Solution's signature and the example text, and rebuilds the harness the LeetCode format assumes: helper types (`ListNode`, `TreeNode`, `Node`), the arguments, the call. Writes the problem's neutral types and hints | `driver/cpp/`, `driver/python/`, `driver/java/`; the shared example parser is `driver/example.py` |
 | **Tracer** | Observes the run before each line of the user's code: runtime hooks, source instrumentation, or a debugger through DAP | `sys.settrace` in `adapters/python/tracer.py`; rewriters in `adapters/cpp/rewriter/` and `adapters/java/src/lvtrace/Rewriter.java` |
 | **Normalizer** | Turns each native value into a trace kind, with stable ids for objects | `Serializer<T>` in `trace.hpp`, `adapters/python/tracer.py`, `Snapshot.java` |
 | **Outcomes** | What each line evaluated: conditions, stores, reads, and which locals index which containers (`indexes`) | the rewriters, and `adapters/python/instrument.py` |

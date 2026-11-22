@@ -3,7 +3,7 @@
 > **Status:** Beta (Visi 1.0.0-beta.1). The architecture as built, and why it is set up this way.
 > **Related:** [`../README.md`](../README.md) (what Visi does and how to run it), [`trace-format.md`](trace-format.md) (the contract), [`../CONTRIBUTING.md`](../CONTRIBUTING.md) (how to change it)
 
-Visi steps through a LeetCode `Solution` and draws its data structures as they change. Getting state out of a running `Solution` class without asking the user to change their code is the hard part, so this is where most of the design effort went.
+Visi steps through a `Solution` class and draws its data structures as they change. Getting state out of a running `Solution` class without asking the user to change their code is the hard part, so this is where most of the design effort went.
 
 The key decision: **the backend and the frontend only talk through a trace format.** Each side can be built, tested, and replaced without the other. The data flow and the boundaries between the components are the stable part of this design; how the service is hosted is not described here.
 
@@ -80,7 +80,7 @@ Everything that comes out of the sandbox is treated as **untrusted data**. The u
 | Area | State |
 |---|---|
 | Trace format, schema, and golden fixtures | v0.15. Six problems (Two Sum, Reverse Linked List, iterative preorder, Clone Graph, Maximum Depth, Subsets), each in C++, Python, and Java, with the other languages' traces matching the C++ one call by call |
-| C++ adapter | Header-only runtime, a Clang LibTooling rewriter that instruments a plain Solution without adding lines, and a driver that rebuilds LeetCode's harness |
+| C++ adapter | Header-only runtime, a Clang LibTooling rewriter that instruments a plain Solution without adding lines, and a driver that rebuilds the harness the LeetCode format assumes |
 | Python adapter | `sys.settrace` for the steps and a syntax-tree rewrite for what each line evaluated, on Python 3.12 |
 | Java adapter | Source instrumentation on the JDK's own parser, compiled with javac in the same JVM, on JDK 21 |
 | CLI (`pipeline/`) | `python3 -m pipeline` takes a Solution and an example to a validated trace in one command, on this machine or in the sandbox |
@@ -99,7 +99,7 @@ flowchart TB
     driver["`**1. Driver**
     wraps the user's Solution in a main()
     parses the example into the method's argument types
-    supplies LeetCode helpers (ListNode, TreeNode, Node)
+    supplies the helper types (ListNode, TreeNode, Node)
     derives the problem metadata: neutral param types, inferred hints`"]
     observe["`**2. Observe**: get control just before each line of user code runs
     one strategy per language:
@@ -174,7 +174,7 @@ The frontend's full design is in [`frontend.md`](frontend.md).
 
 ## 5. Worked example: Two Sum
 
-Input `nums = [2, 7, 11, 15]`, `target = 9`, using the `Solution` from LeetCode as-is. The full trace is in [`fixtures/two-sum.trace.json`](../fixtures/two-sum.trace.json). One step of it:
+Input `nums = [2, 7, 11, 15]`, `target = 9`, using the Two Sum `Solution` as written. The full trace is in [`fixtures/two-sum.trace.json`](../fixtures/two-sum.trace.json). One step of it:
 
 ```json
 {
@@ -278,7 +278,7 @@ A step is taken before its line runs, so the top frame can also carry `outcomes`
 It works because the system is split into two halves that communicate only through the shared trace format:
 
 1. **Language adapters (backend).** Each supported language has an adapter with three jobs:
-   - **Driver generation:** wrap the user's `Solution` so it can be called with the parsed example. LeetCode signatures differ by language (`vector<int>&` vs `List[int]` vs `int[]`), but every adapter derives the same problem metadata (parameter names, neutral types, inferred hints).
+   - **Driver generation:** wrap the user's `Solution` so it can be called with the parsed example. Signatures differ by language (`vector<int>&` vs `List[int]` vs `int[]`), but every adapter derives the same problem metadata (parameter names, neutral types, inferred hints).
    - **Tracing:** run the code and record a snapshot per step.
    - **Normalization:** convert language-specific values (`std::unordered_map`, `dict`, `HashMap`) into the shared value model.
 2. **Visualization engine (frontend).** Reads only the trace. It knows nothing about C++ or Python, chooses a renderer from the normalized kinds, and animates the changes between steps.
@@ -416,9 +416,9 @@ The architecture does not depend on these choices: another adapter or another fr
 │   ├── java.Dockerfile        the Java image: JDK 21, the adapter compiled
 │   ├── java.Dockerfile.dockerignore  its build context
 │   └── colima-gvisor.yaml     gVisor on macOS: a Colima profile's runsc setup
-├── driver/                    LeetCode's harness, rebuilt (Python): python3 -m driver
+├── driver/                    the harness, rebuilt (Python): python3 -m driver
 │   ├── example.py             example text -> neutral JSON (every language)
-│   ├── shapes.py              LeetCode's notations for lists, trees, graphs (every language)
+│   ├── shapes.py              the notations for lists, trees, graphs (every language)
 │   ├── hints.py               a 2D-array parameter's hint, from its name and the example's shape (every language)
 │   ├── cpp/                   signature, node comments, prelude and main for C++
 │   ├── python/                signature (type hints), node comments, run.json for Python

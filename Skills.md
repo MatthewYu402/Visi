@@ -87,7 +87,7 @@ The spec, schema, fixtures, and docs are one contract. Change them together. Pro
    - runtime hooks (Python, JavaScript, Java), see `docs/native-tracing.md` section 3
    - source instrumentation (C++, Go), see `docs/native-tracing.md` section 4
    - DAP client (breadth, cheapest to add), see `docs/dap.md`
-2. **Driver:** wrap the user's unmodified `Solution`, parse the example input into the method's argument types, and provide the LeetCode helper types (`ListNode`, `TreeNode`, `Node`). Keep the user's line numbers correct. Derive the problem metadata: neutral parameter types and inferred hints.
+2. **Driver:** wrap the user's unmodified `Solution`, parse the example input into the method's argument types, and provide the helper types (`ListNode`, `TreeNode`, `Node`). Keep the user's line numbers correct. Derive the problem metadata: neutral parameter types and inferred hints.
 3. **Observe and snapshot:** capture state just before each line of **user** code (skip the driver and the standard library). Deep-copy at that instant.
 4. **Normalize:** map every native type to the kind its type determines. Assign stable ids (`n1`, `n2`, ...), create heap entries before recursing, and fail loudly on an unrecognized type.
 5. **Step cap:** stop at 2,000 steps, set `truncated`, and write the trace at that moment, because the program may never end.

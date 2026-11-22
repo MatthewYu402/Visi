@@ -188,7 +188,7 @@ There is no problem catalog. The system knows only the user's `Solution` source 
 
 Inside a type name, arguments are separated by `", "`, one comma and one space: `map<int, int>`, `tuple<int, string>`. That is the one spelling, so names can be compared as text.
 
-`input` holds the example's values, keyed by parameter name, as written in LeetCode's notation: a tree is still its level-order array here. When the example uses other names than the parameters (Clone Graph's example says `adjList`, its parameter is `node`), the keys are the parameter names. A value that describes the input but is not a parameter (Linked List Cycle's `pos`) is not in `input`; its effect shows in the heap.
+`input` holds the example's values, keyed by parameter name, as written in the example's notation: a tree is still its level-order array here. When the example uses other names than the parameters (Clone Graph's example says `adjList`, its parameter is `node`), the keys are the parameter names. A value that describes the input but is not a parameter (Linked List Cycle's `pos`) is not in `input`; its effect shows in the heap.
 
 `returns` is optional and describes the method's return value: a `type`, written with the same neutral names as a parameter's, and an optional `hint` with the same meaning. A method with no return value has the type `"void"`, which is how a `null` result is told apart from a returned null pointer ([The return value](#the-return-value)). An adapter that reads the signature should always write `returns`, and must write it for a `void` method.
 
@@ -198,7 +198,7 @@ The last three cover a parameter whose type is a plain array but whose problem t
 
 Hints are **inferred by the adapter**, never supplied by the user. Sources, from most to least certain:
 1. **Signature types**: a `TreeNode` parameter is a tree.
-2. **LeetCode parameter names**: `edges`, `grid`, `intervals`, ...
+2. **Conventional parameter names**: `edges`, `grid`, `intervals`, ...
 3. **How the code uses the value**: for example, elements used as indices into another array.
 4. **The shape of the example value**: a language-neutral baseline every adapter can share.
 
@@ -360,7 +360,7 @@ Two adapters let the code's use of a value decide its kind where its type says s
 | Adapter | Value | Kind written | Why |
 |---|---|---|---|
 | Python | a `list` the code passes to `heapq` | `priority-queue`, `order: "min"` | heapq keeps a binary heap in a plain list; drawn as an array, its order means nothing |
-| Java | a `Deque` (`ArrayDeque`, `LinkedList`) the code uses only through `push`, `pop`, and `peek` | `stack` | Java's documentation recommends a `Deque` for a stack, so LeetCode's Java Solutions write one |
+| Java | a `Deque` (`ArrayDeque`, `LinkedList`) the code uses only through `push`, `pop`, and `peek` | `stack` | Java's documentation recommends a `Deque` for a stack, so Java Solutions usually write one |
 
 Each is decided by the adapter's rewriter from the code, never guessed by the frontend, and written only where the rule is certain (every call on the value is one the kind has). This departs from "the type decides the kind" (Key Insight 6, CLAUDE.md invariant 11) and does not show the value's real representation, which C++ never needs to do. It is kept on purpose, recorded in each adapter's doc ([`python.md`](adapters/python.md) §4.4, [`java.md`](adapters/java.md) §5), and is an open question to revisit.
 
@@ -462,7 +462,7 @@ Every step is taken before its line runs, so a value being returned would never 
 
 `return_value` follows the same rule as `result`: present only when it says something. It is never `null` as a placeholder. A frame without it has not returned yet.
 
-A call that ends by an exception has no return step. Exceptions are rare in LeetCode solutions and the format does not model them yet.
+A call that ends by an exception has no return step. Exceptions are rare in these solutions and the format does not model them yet.
 
 ### Outcomes
 A step is taken before its line runs, so it shows what a line is about to do, never what the line did. The next step shows the new locals, but not why the program went where it went: a condition that was false leaves no trace of itself, and a store into `numMap[nums[i]]` changes a map without saying which entry the line wrote. The top frame's `outcomes` records what its line evaluated, so the frontend can show `if (numMap.count(complement))  →  false` without guessing.
@@ -501,7 +501,7 @@ Rules:
 - **A `value` is a value** ([Section 5](#5-the-value-model)), and a `ref` in one names an object in the step's heap, like a `ref` in `locals`.
 - **Present only when it says something**, like `return_value`: a step whose line evaluated nothing that is recorded has no `outcomes`, never an empty list. A return step has none: its `return_value` already says what the line produced.
 - **A read is a cell the line used, not one it changed.** An element that is the target of a store (`dp[i] = ...`, `count[c]++`), handed to something that may change it (`swap(nums[i], nums[j])`, a non-const reference), or the object of a call (`groups[key].push_back(s)`) is not a read; a store says what changed, and the step's diff shows it. `dp[i] = min(dp[i], dp[i - coin] + 1)` reads `dp[i]` and `dp[i - coin]`. A lookup that found nothing (`count` is 0, `find` is `end()`) records nothing: there is no entry to point at, and a condition around it already says it missed.
-- **A string is read like an array.** A string local stays a bare JSON string in `locals`, but `s[i]` reads its character `i`, so `"target": "s", "at": [i]` with the character as `value`. Positions count the characters the string holds as the adapter serializes it (bytes in C++, so non-ASCII text can be off); LeetCode's strings are ASCII. A string's `find` or `count` is a search, not a lookup of an entry, and is not a read.
+- **A string is read like an array.** A string local stays a bare JSON string in `locals`, but `s[i]` reads its character `i`, so `"target": "s", "at": [i]` with the character as `value`. Positions count the characters the string holds as the adapter serializes it (bytes in C++, so non-ASCII text can be off); problem inputs in this format are ASCII. A string's `find` or `count` is a search, not a lookup of an entry, and is not a read.
 - **Reads come in the order the program evaluated them**, which a language may leave to the compiler. In C++ the arguments of `max(dp[1], nums[2])` can be evaluated in either order, and GCC and Clang differ, so two traces of one program can list a line's reads in different orders. Nothing may depend on the order of reads within a step: the frontend outlines them all at once.
 - **Reads, at most 16 per step.** A line that reads more (a loop on one line) keeps its first 16; the rest are left out. Conditions and stores have no such limit.
 - **What is not recorded yet:** the results of calls (`numMap.count(x) → 1`), the parts of a condition that `&&` and `||` evaluated, and conditions of `switch`. The frontend shows such a line without a result. Reads through iterators (`*it`) and range-`for` loops, and `front()`, `back()`, and `top()` (the drawings already mark those ends) are not recorded as reads.
@@ -513,7 +513,7 @@ An event log (`insert(2, 0)`, `i=1`, ...) forces the frontend to replay events 1
 
 The diff between two adjacent snapshots is used only to **animate** what changes (what was added, removed, or modified). It is not needed to render a step.
 
-> **Key Insight 8: snapshots give random access and trivial rewind, at the cost of size.** Snapshots repeat unchanged data. For LeetCode-sized examples with a capped step count, the cost is negligible.
+> **Key Insight 8: snapshots give random access and trivial rewind, at the cost of size.** Snapshots repeat unchanged data. For interview-sized examples with a capped step count, the cost is negligible.
 
 ### Limits
 Adapters must stop recording at either of two limits, and set `"truncated": true` at the top level with `truncated_by` naming the limit:
@@ -790,4 +790,4 @@ These are mainly notes for me, to help me understand these concepts.
 
 > **Q31. Why give a container an `id` only when it is shared, and keep writing it in full at every place, instead of moving containers into the heap like objects?** Values were never wrong without ids: every step re-reads every variable, so two names for one list both show its current contents. What was lost is the fact that they are one list, and that is what explains Python's `[[0] * n] * m` (every row changes together) or `res.append(path)` without a copy. An `id` at every place restores exactly that fact. Moving containers into the heap would say the same thing but change how every local is written, every renderer, and every trace, for the rare container that is shared; and an `id` on every container would grow every trace and make every list look shared. Writing the contents at each place repeats them, which is the cost the format already accepts for snapshots (Key Insight 8): every place still draws on its own.
 
-> **Q32. Why a size budget that ends in a truncated trace, rather than an error, and why say which limit it was?** A large input is not a mistake: LeetCode's own constraints allow 10^4 elements, and a reader pasting a real test case should get something to step through, as an infinite loop does at the step limit. Without the budget, the adapter recorded until the pipeline refused the trace (over 16 MB) or the run ran out of memory, and the reader got an error that blamed the wrong thing. Ending at a budget below that limit turns both into the first steps of the run. `truncated_by` is there because the reader needs a different explanation for each: "an infinite loop?" for the step limit, "try a smaller input" for the size budget. Guessing it from the step count would tie the frontend to the default step limit, and a trace should say what it means.
+> **Q32. Why a size budget that ends in a truncated trace, rather than an error, and why say which limit it was?** A large input is not a mistake: interview problems' constraints often allow 10^4 elements, and a reader pasting a real test case should get something to step through, as an infinite loop does at the step limit. Without the budget, the adapter recorded until the pipeline refused the trace (over 16 MB) or the run ran out of memory, and the reader got an error that blamed the wrong thing. Ending at a budget below that limit turns both into the first steps of the run. `truncated_by` is there because the reader needs a different explanation for each: "an infinite loop?" for the step limit, "try a smaller input" for the size budget. Guessing it from the step count would tie the frontend to the default step limit, and a trace should say what it means.

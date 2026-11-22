@@ -27,7 +27,7 @@ sequenceDiagram
     Note over page: replay the trace
 ```
 
-> **Key insight 1: the form's fields become LeetCode's example text on the server.** `{"nums": "[2,7,11,15]", "target": "9"}` becomes `nums = [2,7,11,15], target = 9`, which the driver already reads. So the form needs no parser of its own, and a value is checked once, by the same code that runs it.
+> **Key insight 1: the form's fields become example text on the server.** `{"nums": "[5,1,8,3]", "target": "11"}` becomes `nums = [5,1,8,3], target = 11`, which the driver already reads. So the form needs no parser of its own, and a value is checked once, by the same code that runs it.
 
 ## 2. Endpoints
 
@@ -45,22 +45,22 @@ Reads the Solution's public methods. Nothing is compiled or run, so this is answ
 
 ```json
 {"source": "class Solution { public: vector<int> twoSum(vector<int>& nums, int target) { ... } };",
- "example": "Input: nums = [2,7,11,15], target = 9\nOutput: [0,1]"}
+ "example": "Input: nums = [5,1,8,3], target = 11\nOutput: [2,3]"}
 ```
 
-`example` is optional. For Python, add `"language": "python"`; a method whose body is not written yet (LeetCode's empty template) is still read. When present, the answer also has `fields`: the example's values by name, rewritten compactly, for filling the form.
+`example` is optional. For Python, add `"language": "python"`; a method whose body is not written yet (an empty template) is still read. When present, the answer also has `fields`: the example's values by name, rewritten compactly, for filling the form.
 
 ```json
 {"methods": [{"name": "twoSum",
               "params": [{"name": "nums", "type": "array<int>"}, {"name": "target", "type": "int"}],
               "returns": "array<int>", "extras": [], "readable": true, "note": ""}],
  "method": "twoSum",
- "fields": {"nums": "[2,7,11,15]", "target": "9"}}
+ "fields": {"nums": "[5,1,8,3]", "target": "11"}}
 ```
 
 - **`type`** is the neutral type name (spec §4), the same one the trace's `problem.params` will carry.
 - **`extras`** are names the example may give that are not parameters. Today only `pos`, offered when a method takes a `ListNode*` (Linked List Cycle). It may be left empty.
-- **`method`** is the one to preselect: the first public method the driver can read. LeetCode's method comes first in the class; helpers usually come after it.
+- **`method`** is the one to preselect: the first public method the driver can read. The method to solve comes first in the class; helpers usually come after it.
 - **`readable: false`** with a `note` marks a method the driver cannot read, such as a template, or one taking a node type with no commented definition. It is listed, so the user sees why, but never preselected.
 
 ### 2.3 `POST /api/run`
@@ -68,7 +68,7 @@ Reads the Solution's public methods. Nothing is compiled or run, so this is answ
 ```json
 {"source": "class Solution { ... };",
  "method": "twoSum",
- "fields": {"nums": "[2,7,11,15]", "target": "9"},
+ "fields": {"nums": "[5,1,8,3]", "target": "11"},
  "timeout": 10}
 ```
 
@@ -107,9 +107,9 @@ The frontend adds two of its own: `network` (the API cannot be reached, or answe
 | Limit | Value | Why |
 |---|---|---|
 | Request body | 1 MB, checked before the body is read: a larger `Content-Length` is refused unread, and a body sent without one stops being read once it passes 1 MB | The caps below apply only once a body is parsed; without this one, a body of any size was read into memory first (a 200 MB body took the service from 47 MB to 595 MB). The largest valid request, a 64 KB Solution and 32 values of 16 KB, is about 576 KB, and fits with room for JSON's escaping |
-| Solution | 64 KB | A LeetCode Solution is a few KB. The rewriter and the compiler read all of it |
-| One value, or a pasted example | 16 KB | LeetCode's constraints rarely go past 10^4 elements per input |
-| Fields | 32 | No LeetCode method takes that many parameters |
+| Solution | 64 KB | A Solution class is a few KB. The rewriter and the compiler read all of it |
+| One value, or a pasted example | 16 KB | Interview-style problems rarely go past 10^4 elements per input |
+| Fields | 32 | No problem's method takes that many parameters |
 | Time | 10 s per run, the same as the CLI's default; 60 s for rewriting and for compiling | The sandbox's own limits (§3 of `sandboxing.md`) apply on top |
 | Runs at once (slots) | 2 (`TRACE_MAX_RUNS`) | Each run is a container with 1 CPU and 1 GB (`TRACE_RUN_MEMORY`) |
 | Runs waiting | At most 10 per slot (`TRACE_MAX_WAITING`), and never more than can start within 30 s at the measured pace. Beyond that, `busy` at once, with an estimated wait | Nobody waits 30 s only to be refused |

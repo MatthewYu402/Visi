@@ -3,7 +3,7 @@
 > **Status:** Beta (Visi 1.0.0-beta.1). The driver is implemented in [`driver/`](../driver/) (Python) for C++, Python, and Java, with tests. Every golden fixture produces its golden trace through a generated `main`.
 > **Related:** [`trace-format.md`](trace-format.md) (the output contract), [`native-tracing.md`](native-tracing.md) (how the run is observed), [`hint-inference.md`](hint-inference.md) (choosing hints), [`sandboxing.md`](sandboxing.md) (where the program runs), [`adapters/cpp.md`](adapters/cpp.md) (the C++ runtime the driver calls)
 
-A LeetCode `Solution` class cannot run on its own. It has no `main`, it does not define `ListNode` or `TreeNode`, and nothing turns the text `nums = [2,7,11,15], target = 9` into real arguments. On LeetCode a hidden harness does all of that. This document describes how we rebuild that harness. We call it the **driver**.
+A `Solution` class in the LeetCode format cannot run on its own. It has no `main`, it does not define `ListNode` or `TreeNode`, and nothing turns the text `nums = [5,1,8,3], target = 11` into real arguments. Where that format comes from, a hidden harness does all of that. This document describes how we rebuild that harness. We call it the **driver**.
 
 ```mermaid
 flowchart LR
@@ -23,13 +23,13 @@ The driver does not produce the trace. It produces a program that, when run, wri
 | Job | Input | Output | Where | Language-specific? |
 |---|---|---|---|---|
 | **Parse the example** (Stage 1) | The example text | `{name: value}` in neutral JSON | `driver/example.py` | **No** |
-| **Decode linked structures** | A value in LeetCode's notation | Node records with links | `driver/shapes.py` | **No** |
+| **Decode linked structures** | A value in the example's notation | Node records with links | `driver/shapes.py` | **No** |
 | **Hint 2D arrays** | A parameter's name, neutral type, and example value | `hint` on the parameter, or none | `driver/hints.py` | **No** |
 | **Read the signature** | The `Solution` source | The method to call, its parameters and return type, neutral types | `driver/cpp/signature.py`, `types.py` | Yes |
 | **Read node definitions** | Comments in the source | Node classes and their `Fields` tables | `driver/cpp/nodes.py` | Yes |
 | **Generate** (Stage 2) | All of the above | `problem`, the prelude, and `main` | `driver/cpp/generate.py` | Yes |
 
-> **Key insight 1: the example is parsed once, into neutral JSON, and every language starts from that.** Understanding LeetCode's notation (level-order trees, the `pos` trick for cycles) is the hard part, and it has nothing to do with C++. `example.py` and `shapes.py` will be shared by the Python adapter. Only turning neutral data into native code is written per language.
+> **Key insight 1: the example is parsed once, into neutral JSON, and every language starts from that.** Understanding the notation (level-order trees, the `pos` trick for cycles) is the hard part, and it has nothing to do with C++. `example.py` and `shapes.py` will be shared by the Python adapter. Only turning neutral data into native code is written per language.
 
 **Decided:** the driver is written in Python. Stage 1 must be shared by every language, so it cannot live inside one adapter, and `tools/check_trace.py` already makes Python a project dependency. No package outside the standard library is used.
 
@@ -61,7 +61,7 @@ Adapters never write `problem.name`. `hint` is left out: choosing hints is [`hin
 
 `signature.py` reads the `Solution` class's **declarations only**, never statements. First it replaces every comment and string literal with spaces (keeping each character's position), so a `{` inside a string or a method in a comment cannot fool it. Then it walks the class body: access sections, method heads, and parameter lists, balancing `<>`, `()`, and `{}`.
 
-This is enough because **LeetCode writes the signature itself**: the method the harness calls always has the plain shape `ReturnType name(Type a, Type& b)`. Helper methods can be anything. One that cannot be read (a member template, a parameter with no name) is kept as unreadable and only causes an error if it is the one to call.
+This is enough because **the format fixes the signature**: the method the harness calls always has the plain shape `ReturnType name(Type a, Type& b)`. Helper methods can be anything. One that cannot be read (a member template, a parameter with no name) is kept as unreadable and only causes an error if it is the one to call.
 
 **Possible later:** the rewriter parses the file with Clang anyway, so it could produce the same method list from the AST, and `signature.py` would become a fallback. The rest of the driver only sees `Method` and `Param` objects, so the swap touches one file.
 
@@ -84,11 +84,11 @@ References, `const`, and `std::` are removed first. The table, decided for every
 
 Arguments inside a type name are separated by `", "`. A type with no neutral name (`optional<int>`, a struct the driver does not know) is an error that names the parameter.
 
-A 2D-array parameter (`array<array<int>>` and the like) can also get a **hint** (spec §4): `driver/hints.py` writes `grid`, `adjacency-list`, `adjacency-matrix`, `edge-list`, or `intervals` when the name is one LeetCode uses for that structure (`grid`, `graph`, `isConnected`, `edges`, `prerequisites`, `intervals`, ...) and the example has its shape (rows of equal length, values that index the rows, a square of 0s and 1s, pairs, `[start, end]` with start ≤ end). A name without the shape, or a shape without a known name, writes no hint: the frontend's drawing by kind is always right, and its View menu switches the rest ([`hint-inference.md`](hint-inference.md)).
+A 2D-array parameter (`array<array<int>>` and the like) can also get a **hint** (spec §4): `driver/hints.py` writes `grid`, `adjacency-list`, `adjacency-matrix`, `edge-list`, or `intervals` when the name is a conventional one for that structure (`grid`, `graph`, `isConnected`, `edges`, `prerequisites`, `intervals`, ...) and the example has its shape (rows of equal length, values that index the rows, a square of 0s and 1s, pairs, `[start, end]` with start ≤ end). A name without the shape, or a shape without a known name, writes no hint: the frontend's drawing by kind is always right, and its View menu switches the rest ([`hint-inference.md`](hint-inference.md)).
 
 ### Which method is called
 
-**Decided.** LeetCode's harness knows which method to call because it knows the problem. We do not, and LeetCode allows any number of public methods, so the driver decides from the example:
+**Decided.** The original harness knows which method to call because it knows the problem. We do not, and a Solution may have any number of public methods, so the driver decides from the example:
 
 1. `--method NAME`, when given, picks the public method of that name.
 2. Otherwise, the public method whose **parameter names are exactly the example's names**. A public helper such as `backtrack(nums, start, path, result)` next to `subsets(nums)` is skipped, because its names do not match.
@@ -109,7 +109,7 @@ A Solution with no `class Solution` but another class (`class LRUCache`) is answ
 
 ### Stage 1: text to neutral JSON
 
-`nums = [2,7,11,15], target = 9` is split at commas outside brackets and strings, each part is `name = value`, and each value is read as JSON. LeetCode's values are JSON literals (`null`, `true`, `"abc"`). A pasted block works too: text before `Input:` and from `Output:` onward is ignored.
+`nums = [5,1,8,3], target = 11` is split at commas outside brackets and strings, each part is `name = value`, and each value is read as JSON. The format's values are JSON literals (`null`, `true`, `"abc"`). A pasted block works too: text before `Input:` and from `Output:` onward is ignored.
 
 The result keeps the example **as written**: a tree is still a level-order array. It becomes `problem.input`, keyed by parameter name.
 
@@ -134,7 +134,7 @@ The parameter's type decides how a value is read. The same array means different
 
 The decoding rules are in `shapes.py`, written once. Each language's generator only writes out the decoded nodes. For C++ that is one `new` per node, then one assignment per link field, including the null ones, so a constructor that leaves a field uninitialized cannot matter.
 
-> **Verify against real LeetCode pages.** These notations are written from LeetCode problem pages as remembered, not checked against them in this repo. Before relying on a row for a new problem, compare it with that problem's page.
+> **Verify against real problem pages.** These notations follow the LeetCode format as remembered, not checked against it in this repo. Before relying on a row for a new problem, compare it with that problem's page.
 
 Nodes the driver builds get their ids (`n1`, `n2`, ...) the first time a step sees them, not when they are created. So a golden trace does not depend on the order the driver builds nodes in.
 
@@ -144,7 +144,7 @@ Nodes the driver builds get their ids (`n1`, `n2`, ...) the first time a step se
 
 **Decided:** `ListNode` and `TreeNode` are supplied by `adapters/cpp/runtime/leetcode_types.hpp`. A commented definition of either is checked to have the same fields, and an uncommented one is an error ("LeetCode supplies ListNode"), since the program would define it twice.
 
-**Decided:** every other node type comes from its comment. LeetCode shows a problem's `Node` as a comment above the `Solution`:
+**Decided:** every other node type comes from its comment. The format shows a problem's `Node` as a comment above the `Solution`:
 
 ```cpp
 /*
@@ -158,7 +158,7 @@ public:
 */
 ```
 
-`nodes.py` takes each `class` or `struct` inside a comment (after removing LeetCode's leading ` * ` and inner `//` comments), compiles it as written, and generates its `Fields` table from its data members (declarations with no parentheses; `Node *left, *right;` declares two). The node's **shape**, which notation its example values use, follows from its link fields:
+`nodes.py` takes each `class` or `struct` inside a comment (after removing the comment's leading ` * ` and inner `//` comments), compiles it as written, and generates its `Fields` table from its data members (declarations with no parentheses; `Node *left, *right;` declares two). The node's **shape**, which notation its example values use, follows from its link fields:
 
 | Link fields (besides `val`) | Shape | Problems |
 |---|---|---|
@@ -194,7 +194,7 @@ clang++ -std=c++20 -I adapters/cpp/runtime -include prelude.hpp program.cpp -o p
 TRACE_OUT=trace.json ./program
 ```
 
-The prelude's fixed part is one file, `adapters/cpp/runtime/prelude_common.hpp`, which names each standard header, because `<bits/stdc++.h>` does not exist in libc++ (macOS). It is a file, not a list in the driver, so the sandbox image can precompile exactly what every prelude includes ([`sandboxing.md`](sandboxing.md) §4.1). It says `using namespace std;` because LeetCode's own C++ stubs write `vector<int>` with no `std::`, so names from `std` must be in scope.
+The prelude's fixed part is one file, `adapters/cpp/runtime/prelude_common.hpp`, which names each standard header, because `<bits/stdc++.h>` does not exist in libc++ (macOS). It is a file, not a list in the driver, so the sandbox image can precompile exactly what every prelude includes ([`sandboxing.md`](sandboxing.md) §4.1). It says `using namespace std;` because C++ Solutions in this format write `vector<int>` with no `std::`, so names from `std` must be in scope.
 
 ### `main`
 
@@ -205,11 +205,11 @@ What the driver generates for Two Sum:
 int main() {
   ::trace::tracer.begin(R"__trace__({"method": "twoSum", "params": [...], "returns": {"type": "array<int>"}, "input": {...}})__trace__");
 
-  // nums = [2,7,11,15]
-  vector<int> nums = {2, 7, 11, 15};
+  // nums = [5,1,8,3]
+  vector<int> nums = {5, 1, 8, 3};
 
-  // target = 9
-  int target = 9;
+  // target = 11
+  int target = 11;
 
   Solution solution;
   auto answer = solution.twoSum(nums, target);
@@ -234,7 +234,7 @@ How a run can end:
 ### Command line
 
 ```bash
-python3 -m driver SOLUTION --example "nums = [2,7,11,15], target = 9" --out DIR [--method NAME] [--rewrite | --code FILE]
+python3 -m driver SOLUTION --example "nums = [5,1,8,3], target = 11" --out DIR [--method NAME] [--rewrite | --code FILE]
 ```
 
 It writes `DIR/problem.json`, `DIR/prelude.hpp`, and `DIR/program.cpp`, and prints the build and run commands. The code in `program.cpp` is the Solution instrumented by the rewriter with `--rewrite` (it must be built: `make -C adapters/cpp/rewriter`), another file's code with `--code` (such as a hand-instrumented copy), or otherwise the plain Solution, whose trace has a result but no steps. It exits with status 2 and a message when the input cannot be used.
@@ -284,7 +284,7 @@ The tests that compile use `$CXX`, else `clang++`, else `g++`, and are skipped w
 | 1 | Design-class problems (LRU Cache, Min Stack), where the example is a list of calls | Decided: not supported yet; only algorithmic problems. The driver says so when it finds another class and no `Solution`. Later: one trace covering the whole call sequence, which needs a spec change |
 | 2 | Several examples for one problem | One run and one trace per example |
 | 3 | Notations not covered yet: Intersection of Two Linked Lists (`intersectVal`, `skipA`, ...), multilevel lists (`prev`, `child`) | Add each when a problem needs it, verified against its page |
-| 4 | Input types with no notation yet (`map`, `set`) | LeetCode inputs are arrays, strings, numbers, and nodes; add only if a problem needs it |
+| 4 | Input types with no notation yet (`map`, `set`) | Inputs are arrays, strings, numbers, and nodes; add only if a problem needs it |
 | 5 | Which parameter a `void` method changes, so the frontend can point at it | Undecided. The return step already shows the final state |
 
 Decided in this version: primitive neutral names and the `", "` spelling (spec §4), Python for the driver, the method rule (Section 2), and LLVM as a dependency for the rewriter.
@@ -297,7 +297,7 @@ Decided in this version: primitive neutral names and the `", "` spelling (spec �
 They answer different questions. The driver answers "how does this class get called at all?". The tracer answers "what was the state before each line?". A language can change its tracing strategy (instrumentation, runtime hooks, DAP) and keep the same driver, and the example parser is shared by all of them.
 
 **Q2. Why parse the example into neutral JSON instead of straight into C++ values?**
-Because the notation belongs to LeetCode, not to a language. If the C++ adapter parsed level-order trees itself, the Python adapter would need a second copy of the same rules, and the two would drift apart. With a neutral middle form the rules exist once, and each language writes only a small generator.
+Because the notation belongs to the format, not to a language. If the C++ adapter parsed level-order trees itself, the Python adapter would need a second copy of the same rules, and the two would drift apart. With a neutral middle form the rules exist once, and each language writes only a small generator.
 
 **Q3. Why keep the user's code at the top of the file?**
 So `line` needs no mapping. The line the user sees in the editor is the line in the trace. `#line` directives would also work, but an unshifted file is simpler to reason about and to debug.
@@ -309,10 +309,10 @@ The driver is the caller, so it is the code that holds the return value at the e
 A wrong guess still produces a trace that validates, and the user would be shown a correct-looking visualization of the wrong thing. An error before the run is cheap and clear. The one place the driver passes values by position (Clone Graph's `adjList`) is when no name matches at all and only one method fits, and it says so in a warning.
 
 **Q6. Why is there no problem catalog?**
-A catalog would have to be collected from LeetCode and kept current, and the tool would work only for problems in it. Deriving everything from the source and the example means any problem works, including ones the project has never seen. The cost is that hints must be inferred ([`hint-inference.md`](hint-inference.md)).
+A catalog would have to be collected and kept current, and the tool would work only for problems in it. Deriving everything from the source and the example means any problem works, including ones the project has never seen. The cost is that hints must be inferred ([`hint-inference.md`](hint-inference.md)).
 
 **Q7. Why read the signature in Python instead of with Clang first?**
-LeetCode writes the signature the driver needs, so it always has the same plain shape, and reading declarations (never statements) is a small, testable job. A Clang tool needs LLVM installed everywhere the driver runs, and it is the start of the rewriter, which is written separately. When the rewriter exists, its AST can supply the same `Method` objects (Section 2).
+The format fixes the signature the driver needs, so it always has the same plain shape, and reading declarations (never statements) is a small, testable job. A Clang tool needs LLVM installed everywhere the driver runs, and it is the start of the rewriter, which is written separately. When the rewriter exists, its AST can supply the same `Method` objects (Section 2).
 
 **Q8. Why does the generator assign every link field, even the null ones?**
-LeetCode's node classes are compiled as written, and some constructors leave fields uninitialized (an N-ary `Node()` that never sets `val`). Assigning every link after construction makes the built structure depend only on the example, not on what a particular constructor happens to do.
+The commented node classes are compiled as written, and some constructors leave fields uninitialized (an N-ary `Node()` that never sets `val`). Assigning every link after construction makes the built structure depend only on the example, not on what a particular constructor happens to do.
